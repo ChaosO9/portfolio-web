@@ -15,7 +15,7 @@ export default function TechStackSection({ onSelectSkill }: TechStackProps) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
         <h2 className="text-2xl sm:text-3xl font-bold text-cyber-white flex items-center gap-4">
           <span className="font-mono text-cyber-teal text-xl">04.</span>
-          <span>Evidence-Based Tech Stack</span>
+          <span>Tech Stack</span>
           <span className="h-px bg-navy-600 flex-grow max-w-xs" />
         </h2>
       </div>
@@ -62,9 +62,9 @@ export default function TechStackSection({ onSelectSkill }: TechStackProps) {
             </div>
 
             <div className="mt-6 pt-4 border-t border-navy-600/40 flex items-center justify-between text-[11px] font-mono text-cyber-slate/70">
-              <span className="flex items-center gap-1.5">
+              {/* <span className="flex items-center gap-1.5">
                 <Layers className="w-3 h-3 text-cyber-teal" /> Verified in Project Library
-              </span>
+              </span> */}
               <span>Click chip to inspect ↘</span>
             </div>
           </div>

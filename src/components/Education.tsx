@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { GraduationCap, Calendar, MapPin, Award } from "lucide-react";
 import { EDUCATIONS } from "@/data/portfolioData";
 
@@ -34,11 +35,23 @@ export default function EducationSection() {
                 </div>
 
                 {/* Institution Logo Container */}
-                <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-navy-800 border border-navy-600 flex flex-col items-center justify-center p-2 text-center shadow-inner group hover:border-cyber-teal/60 transition">
-                  <GraduationCap className="w-6 h-6 text-cyber-teal mb-0.5 group-hover:rotate-12 transition-transform" />
-                  <span className="text-[10px] font-mono font-bold text-cyber-white">
-                    {edu.logoText}
-                  </span>
+                <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-white p-2 border border-navy-600 flex items-center justify-center text-center shadow-lg group hover:border-cyber-teal transition overflow-hidden">
+                  {edu.logoUrl ? (
+                    <Image
+                      src={edu.logoUrl}
+                      alt={edu.institution}
+                      width={64}
+                      height={64}
+                      className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-200"
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center">
+                      <GraduationCap className="w-6 h-6 text-cyber-teal mb-0.5 group-hover:rotate-12 transition-transform" />
+                      <span className="text-[10px] font-mono font-bold text-navy-900">
+                        {edu.logoText}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
 

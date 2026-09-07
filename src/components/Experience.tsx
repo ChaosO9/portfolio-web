@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Building2, Calendar, MapPin, Tag, ArrowUpRight } from "lucide-react";
 import { EXPERIENCES, Experience } from "@/data/portfolioData";
 
@@ -32,13 +33,28 @@ export default function ExperienceSection({ onSelectSkill }: ExperienceProps) {
               <button
                 key={exp.id}
                 onClick={() => setActiveTabId(exp.id)}
-                className={`text-left px-5 py-3.5 whitespace-nowrap transition-all duration-200 border-b-2 md:border-b-0 md:border-l-2 -mb-[2px] md:mb-0 md:-ml-[2px] flex items-center justify-between group ${
+                className={`text-left px-4 py-3 whitespace-nowrap transition-all duration-200 border-b-2 md:border-b-0 md:border-l-2 -mb-[2px] md:mb-0 md:-ml-[2px] flex items-center justify-between group ${
                   isActive
                     ? "text-cyber-teal bg-cyber-teal/10 border-cyber-teal font-semibold"
                     : "text-cyber-slate hover:text-cyber-light hover:bg-navy-700/50 border-transparent"
                 }`}
               >
-                <span>{exp.companyLogoText}</span>
+                <div className="flex items-center gap-2.5">
+                  {exp.companyLogoUrl ? (
+                    <div className="w-6 h-6 rounded-md bg-white p-0.5 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm">
+                      <Image
+                        src={exp.companyLogoUrl}
+                        alt={exp.companyLogoText}
+                        width={24}
+                        height={24}
+                        className="max-w-full max-h-full object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <Building2 className="w-4 h-4 text-cyber-slate flex-shrink-0" />
+                  )}
+                  <span>{exp.companyLogoText}</span>
+                </div>
                 {isActive && (
                   <span className="hidden md:inline-block w-1.5 h-1.5 rounded-full bg-cyber-teal ml-2" />
                 )}
@@ -70,11 +86,23 @@ export default function ExperienceSection({ onSelectSkill }: ExperienceProps) {
             </div>
 
             {/* Dedicated Company Logo Slot */}
-            <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-navy-800 border border-navy-600 flex flex-col items-center justify-center p-2 text-center shadow-inner group hover:border-cyber-teal/60 transition">
-              <Building2 className="w-6 h-6 text-cyber-teal mb-1 group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-mono text-cyber-light font-bold truncate max-w-full">
-                {activeExperience.companyLogoText}
-              </span>
+            <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-white p-2.5 border border-navy-600 flex items-center justify-center text-center shadow-lg group hover:border-cyber-teal transition overflow-hidden">
+              {activeExperience.companyLogoUrl ? (
+                <Image
+                  src={activeExperience.companyLogoUrl}
+                  alt={activeExperience.companyLogoText}
+                  width={64}
+                  height={64}
+                  className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-200"
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center">
+                  <Building2 className="w-6 h-6 text-cyber-teal mb-1 group-hover:scale-110 transition-transform" />
+                  <span className="text-[10px] font-mono text-navy-900 font-bold truncate max-w-full">
+                    {activeExperience.companyLogoText}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 

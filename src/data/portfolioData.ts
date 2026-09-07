@@ -79,7 +79,7 @@ export const PERSONAL_INFO = {
   linkedinUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
   githubUrl: "https://github.com/ChaosO9",
   resumeUrl: "#",
-  avatarUrl: "https://storage.googleapis.com/web-asset-irfan/portfolio-web/Portfolio%20Profile.webp",
+  avatarUrl: "/images/profile.jpg",
   languages: [
     { name: "Indonesian", level: "Native / Bilingual" },
     { name: "English", level: "Professional Working" },
@@ -92,6 +92,7 @@ export const EXPERIENCES: Experience[] = [
     id: "panasonic-hrms",
     company: "PT Panasonic Manufacturing Indonesia",
     companyLogoText: "Panasonic",
+    companyLogoUrl: "/images/logo-panasonic.svg",
     role: "Information System Center - HRMS",
     division: "Information System Center",
     location: "Jakarta, Indonesia",
@@ -109,6 +110,7 @@ export const EXPERIENCES: Experience[] = [
     id: "panasonic-recruitment",
     company: "PT Panasonic Manufacturing Indonesia",
     companyLogoText: "Panasonic",
+    companyLogoUrl: "/images/logo-panasonic.svg",
     role: "IT Software Engineer (TalentTrail E-Recruitment)",
     division: "Software Engineering",
     location: "Jakarta Timur, Indonesia",
@@ -125,6 +127,7 @@ export const EXPERIENCES: Experience[] = [
     id: "bangkit-mentor",
     company: "Bangkit Academy led by Google, Tokopedia, Gojek, & Traveloka",
     companyLogoText: "Bangkit",
+    companyLogoUrl: "/images/logo-bangkit.jpg",
     role: "Peer Mentor",
     division: "Cloud Computing Path",
     location: "Surabaya, Jawa Timur, Indonesia",
@@ -141,6 +144,7 @@ export const EXPERIENCES: Experience[] = [
     id: "wowrack",
     company: "Wowrack Indonesia",
     companyLogoText: "Wowrack",
+    companyLogoUrl: "/images/logo-wowrack.png",
     role: "Cloud Computing Team — Cloud Raya App",
     division: "Cloud Architecture & R&D",
     location: "Samarinda, Kalimantan Timur, Indonesia",
@@ -158,6 +162,7 @@ export const EXPERIENCES: Experience[] = [
     id: "skypro",
     company: "Skypro Manajemen Teknologi",
     companyLogoText: "Skypro",
+    companyLogoUrl: "/images/logo-skypro.png",
     role: "Project Assistant",
     division: "Enterprise IT Governance",
     location: "Samarinda, Kalimantan Timur, Indonesia",
@@ -173,6 +178,7 @@ export const EXPERIENCES: Experience[] = [
     id: "mka",
     company: "PT. Media Kreasi Abadi",
     companyLogoText: "MKA",
+    companyLogoUrl: "/images/logo-mka.png",
     role: "Web Developer",
     division: "Web Development",
     location: "Balikpapan, Kalimantan Timur, Indonesia",
@@ -196,6 +202,7 @@ export const EDUCATIONS: Education[] = [
     period: "Aug 2024 - Nov 2025 (Graduated 2026)",
     location: "Surabaya, Jawa Timur, Indonesia",
     logoText: "PENS",
+    logoUrl: "/images/logo-pens.png",
     highlights: [
       "Specialized in Cloud Computing, Microservices Architecture, and Enterprise Systems Interoperability.",
       "Final Project: Engineered the SATUSEHAT HL7 FHIR Interoperability Agent connecting Trustmedis EMR to the Indonesian Ministry of Health with zero production load using master-replica DB replication.",
@@ -209,8 +216,10 @@ export const EDUCATIONS: Education[] = [
     period: "Sep 2021 - Sep 2024",
     location: "Samarinda, Kalimantan Timur, Indonesia",
     logoText: "POLNES",
+    logoUrl: "/images/logo-polnes.jpeg",
     highlights: [
       "Core foundation in Software Engineering, Database Systems, Linux System Administration, and Computer Networking.",
+      "Final Project: Microservice for Backend Cloudraya — Engineered containerized microservices on GCP (Cloud Run, Docker, Cloud Build CI/CD, and TensorFlow.js anomaly detection) for CloudRaya.",
       "Graduated with hands-on laboratory experience configuring networks, servers, and full-stack web applications.",
     ],
   },
@@ -289,19 +298,19 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "cloudraya-microservices",
-    title: "Implement Microservice Architecture on Backend of CloudRaya Android App",
+    title: "Microservice for Backend Cloudraya",
     category: "DevOps",
     type: "FINAL PROJECT",
     skills: ["GCP", "Cloud Run", "Docker", "Node.js", "Cloud Build", "TensorFlow.js", "PostgreSQL"],
     date: "Jan 2024",
-    shortDescription: "Microservices backend on Google Cloud with automated CI/CD and TensorFlow.js machine learning anomaly detection for virtual machine health.",
+    shortDescription: "D3 POLNES Final Project: Microservices backend on Google Cloud with automated CI/CD and TensorFlow.js machine learning anomaly detection for virtual machine health.",
     problem: "Rapid user growth in the Cloudraya Android ecosystem demanded decoupled services capable of independent scaling, automated staging delivery, and real-time VM anomaly warnings.",
-    role: "Team Project — Led backend microservice implementation, container packaging, CI/CD pipeline, and ML anomaly detection service integration.",
+    role: "Final Project (D3 POLNES) — Led backend microservice implementation, container packaging, CI/CD pipeline, and ML anomaly detection service integration.",
     solution: "Deployed decoupled microservices using Hapi.js and Docker to Google Cloud Run with Google Cloud Load Balancer. Built CI/CD pipelines via Cloud Build and Artifact Registry, and integrated a TensorFlow.js microservice to detect unusual VM resource behavior.",
     results: "Production-ready backend with zero downtime deployments, independent service scalability, and automated testing from Git push to staging.",
     links: [
       { label: "GitHub Repository", url: "https://github.com/Bangkit-WowRack/Cloud-Computing", type: "github" },
-      { label: "Project Document (ID)", url: "https://drive.google.com/file/d/18JCExFrldp1uRlFSbm6Hm-58IFQFa6Xj/view?usp=sharing", type: "drive" },
+      { label: "Final Project Doc (ID)", url: "https://drive.google.com/file/d/18JCExFrldp1uRlFSbm6Hm-58IFQFa6Xj/view?usp=sharing", type: "drive" },
     ],
     featured: true,
   },
@@ -442,7 +451,7 @@ export const PROJECTS: Project[] = [
     id: "micro-expression-classifier",
     title: "Micro-Expression Classifier Service",
     category: "AI & Cloud",
-    type: "FINAL PROJECT",
+    type: "PERSONAL",
     skills: ["Flask", "PyTorch", "3D-CNN", "Cloud Run", "Cloud Build", "Docker"],
     date: "2024",
     shortDescription: "Deep learning computer vision service classifying micro-expressions from 16-frame image sequences using a 3D-CNN model on Cloud Run.",
@@ -579,8 +588,8 @@ Summary:
 - LinkedIn: ${PERSONAL_INFO.linkedinUrl}
 - GitHub: ${PERSONAL_INFO.githubUrl}
 - Education:
-  * Politeknik Elektronika Negeri Surabaya (PENS) - Applied Bachelor (D4) in Informatics (Graduated March 2026).
-  * Politeknik Negeri Samarinda (POLNES) - Associate Degree (D3) in Information Technology (2021-2024).
+  * Politeknik Elektronika Negeri Surabaya (PENS) - Applied Bachelor (D4) in Informatics (Graduated March 2026). Final Project: SATUSEHAT HL7 FHIR Interoperability Agent.
+  * Politeknik Negeri Samarinda (POLNES) - Associate Degree (D3) in Information Technology (2021-2024). Final Project: Microservice for Backend Cloudraya.
 - Key Experience:
   * PT Panasonic Manufacturing Indonesia: Information System Center - HRMS (Since Jan 2026) & IT Software Engineer (Aug 2025 - Jan 2026). Built TalentTrail AI E-Recruitment (AWS Bedrock, ASP.NET Core) and PTC (People Traffic Control).
   * Bangkit Academy: Peer Mentor (Sep 2024 - Jan 2025) and Cloud Computing graduate.
@@ -592,8 +601,8 @@ Summary:
   2. WireGuard VPN on AWS EC2 (Optimized latency to Singapore).
   3. RAG Chatbot with AWS Bedrock & Lambda.
   4. Bankaltimtara OJK SOP Documentation Audit across 9 domains (COBIT).
-  5. CloudRaya Backend Microservices on GCP (Cloud Run, Cloud Build, Docker, PostgreSQL).
-  6. SATUSEHAT HL7 FHIR Interoperability Agent (Trustmedis to MoH, read-replica DB isolation).
+  5. Microservice for Backend Cloudraya on GCP (Cloud Run, Cloud Build, Docker, PostgreSQL) - POLNES Final Project.
+  6. SATUSEHAT HL7 FHIR Interoperability Agent (Trustmedis to MoH, read-replica DB isolation) - PENS Final Project.
   7. JLPT Registration Bot (Playwright, AWS EC2, Cloudflare queue handling).
   8. HRMS ROMANSY & PTC at Panasonic (MS Teams approval workflows via Power Automate & n8n).
   9. TalentTrail AI E-Recruitment at Panasonic (AWS Bedrock, Blazor, ASP.NET Core).

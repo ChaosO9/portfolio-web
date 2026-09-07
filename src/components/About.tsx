@@ -2,22 +2,77 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Languages, MapPin, CheckCircle2 } from "lucide-react";
+import { Languages, MapPin } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
+import {
+  AwsIcon,
+  GcpIcon,
+  CloudflareIcon,
+  DockerIcon,
+  LinuxIcon,
+  NodeIcon,
+  DotNetIcon,
+  CSharpIcon,
+  PostgresIcon,
+  SqlServerIcon,
+} from "@/components/TechIcons";
+
+const CORE_TECHNOLOGIES = [
+  {
+    name: "AWS",
+    Icon: AwsIcon,
+    detail: "EC2, Bedrock, S3, Lambda",
+  },
+  {
+    name: "Google Cloud",
+    Icon: GcpIcon,
+    detail: "Cloud Run, Cloud Build",
+  },
+  {
+    name: "Docker",
+    Icon: DockerIcon,
+    detail: "Containerization & Compose",
+  },
+  {
+    name: "Cloudflare",
+    Icon: CloudflareIcon,
+    detail: "Zero Trust & Tunnels",
+  },
+  {
+    name: "Linux",
+    Icon: LinuxIcon,
+    detail: "Linux Admin & WireGuard",
+  },
+  {
+    name: "Node.js",
+    Icon: NodeIcon,
+    detail: "Hapi.js & Express",
+  },
+  {
+    name: ".NET Core",
+    Icon: DotNetIcon,
+    detail: ".NET & Web Forms",
+  },
+  {
+    name: "C#",
+    Icon: CSharpIcon,
+    detail: "Enterprise Applications",
+  },
+  {
+    name: "PostgreSQL",
+    Icon: PostgresIcon,
+    detail: "PostgreSQL Database",
+  },
+  {
+    name: "SQL Server",
+    Icon: SqlServerIcon,
+    detail: "Microsoft SQL Server",
+  },
+];
 
 export default function About() {
   const [imgError, setImgError] = useState(false);
 
-  const coreTech = [
-    "AWS (EC2, Bedrock, S3, Lambda)",
-    "Google Cloud (Cloud Run, Cloud Build)",
-    "Docker & Containerization",
-    "Cloudflare Zero Trust & Tunnels",
-    "WireGuard VPN & Linux Admin",
-    "Node.js (Hapi.js, Express)",
-    ".NET Core / Web Forms & C#",
-    "SQL Server & PostgreSQL",
-  ];
 
   return (
     <section id="about" className="max-w-5xl mx-auto px-6 md:px-12 py-24 relative z-10">
@@ -76,11 +131,22 @@ export default function About() {
             <h4 className="text-xs font-mono uppercase tracking-wider text-cyber-white mb-3">
               Core Technologies I Work With:
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm font-mono text-cyber-light">
-              {coreTech.map((tech) => (
-                <div key={tech} className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-cyber-teal flex-shrink-0" />
-                  <span>{tech}</span>
+            <div className="flex flex-wrap gap-3">
+              {CORE_TECHNOLOGIES.map((tech) => (
+                <div
+                  key={tech.name}
+                  className="relative group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-navy-700/80 border border-navy-600 hover:border-cyber-teal hover:bg-navy-700 hover:shadow-lg hover:shadow-cyber-teal/15 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+                  title={`${tech.name} (${tech.detail})`}
+                  aria-label={tech.name}
+                >
+                  <tech.Icon className="w-7 h-7 sm:w-8 sm:h-8 transition-transform duration-200 group-hover:scale-110" />
+
+                  {/* Floating tooltip on hover */}
+                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-navy-900 border border-navy-600 text-cyber-teal text-xs font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-30 shadow-xl flex flex-col items-center">
+                    <span className="font-semibold">{tech.name}</span>
+                    <span className="text-[10px] text-cyber-slate">{tech.detail}</span>
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-navy-900" />
+                  </div>
                 </div>
               ))}
             </div>
@@ -96,11 +162,11 @@ export default function About() {
             {/* Photo container */}
             <div className="relative w-full h-full rounded-xl overflow-hidden bg-navy-700 border border-navy-600 z-10 group-hover:-translate-x-1 group-hover:-translate-y-1 transition-transform duration-300 shadow-2xl">
               <Image
-                src={imgError ? "https://placehold.co/400x400/112240/64ffda?text=Irfan+Noor+Hidayat" : PERSONAL_INFO.avatarUrl}
+                src={imgError ? "https://placehold.co/400x400/112240/64ffda?text=Irfan+Noor+Hidayat" : "/images/profile.jpg"}
                 alt={PERSONAL_INFO.name}
                 fill
                 sizes="(max-width: 768px) 100vw, 300px"
-                className="object-cover grayscale contrast-125 hover:grayscale-0 transition duration-300"
+                className="object-cover contrast-125 transition duration-300"
                 onError={() => setImgError(true)}
               />
               <div className="absolute inset-0 bg-cyber-teal/20 mix-blend-multiply hover:opacity-0 transition duration-300" />

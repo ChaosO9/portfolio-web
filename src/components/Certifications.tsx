@@ -29,7 +29,7 @@ export default function CertificationsSection() {
       {/* Section Heading */}
       <h2 className="text-2xl sm:text-3xl font-bold text-cyber-white mb-10 flex items-center gap-4">
         <span className="font-mono text-cyber-teal text-xl">06.</span>
-        <span>Verified Credentials &amp; Certifications</span>
+        <span>Credentials &amp; Certifications</span>
         <span className="h-px bg-navy-600 flex-grow max-w-xs" />
       </h2>
 

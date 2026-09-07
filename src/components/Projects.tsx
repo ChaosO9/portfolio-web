@@ -98,7 +98,7 @@ export default function ProjectsSection({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
         <h2 className="text-2xl sm:text-3xl font-bold text-cyber-white flex items-center gap-4">
           <span className="font-mono text-cyber-teal text-xl">05.</span>
-          <span>Verified Projects Library</span>
+          <span>Projects Library</span>
           <span className="h-px bg-navy-600 flex-grow max-w-xs" />
         </h2>
 
@@ -163,11 +163,10 @@ export default function ProjectsSection({
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-1 rounded-lg transition ${
-                    isSelected
+                  className={`px-3 py-1 rounded-lg transition ${isSelected
                       ? "bg-cyber-teal text-navy-900 font-semibold shadow-sm"
                       : "bg-navy-800 text-cyber-slate hover:text-cyber-light hover:bg-navy-700"
-                  }`}
+                    }`}
                 >
                   {cat}
                 </button>
@@ -184,11 +183,10 @@ export default function ProjectsSection({
                 <button
                   key={t}
                   onClick={() => setSelectedType(t)}
-                  className={`px-3 py-1 rounded-lg transition ${
-                    isSelected
+                  className={`px-3 py-1 rounded-lg transition ${isSelected
                       ? "bg-cyber-teal text-navy-900 font-semibold shadow-sm"
                       : "bg-navy-800 text-cyber-slate hover:text-cyber-light hover:bg-navy-700"
-                  }`}
+                    }`}
                 >
                   {t}
                 </button>
@@ -219,11 +217,10 @@ export default function ProjectsSection({
                   onClick={() =>
                     onSelectSkillFilter(skill === "All Skills" ? null : skill)
                   }
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-mono transition ${
-                    isSelected
+                  className={`px-2.5 py-1 rounded-md text-[11px] font-mono transition ${isSelected
                       ? "bg-cyber-teal/20 text-cyber-teal border border-cyber-teal font-semibold"
                       : "bg-navy-800/80 text-cyber-slate hover:text-cyber-light hover:bg-navy-700 border border-navy-600/60"
-                  }`}
+                    }`}
                 >
                   {skill}
                 </button>
