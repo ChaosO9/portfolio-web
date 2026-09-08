@@ -50,14 +50,14 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { message, projectTitle, history } = body;
+    const { message, projectTitle, history, sessionId } = body;
 
-    let result: { text: string; mode: "bedrock" | "demo" };
+    let result: { text: string; mode: "bedrock" | "demo"; sessionId?: string };
 
     if (projectTitle) {
       result = await explainProjectWithBedrock(projectTitle);
     } else if (message) {
-      result = await askBedrock(message, history || []);
+      result = await askBedrock(message, history || [], sessionId);
     } else {
       return NextResponse.json(
         { error: "Please provide either a message or projectTitle." },
@@ -68,6 +68,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         response: result.text,
+        sessionId: result.sessionId,
         remaining: rateCheck.remaining,
         limit: MAX_REQUESTS_PER_IP,
         mode: result.mode,

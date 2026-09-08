@@ -38,6 +38,7 @@ export default function AiChatSection() {
   const [quotaRemaining, setQuotaRemaining] = useState<number>(5);
   const [rateLimited, setRateLimited] = useState(false);
   const [mode, setMode] = useState<"bedrock" | "demo">("demo");
+  const [sessionId, setSessionId] = useState<string | null>(null);
 
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -80,11 +81,16 @@ export default function AiChatSection() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: query,
-          history: newMessages.slice(-6), // Send last few messages for conversational context
+          history: messages.slice(-8), // Send previous messages for conversational context
+          sessionId: sessionId,
         }),
       });
 
       const data = await res.json();
+
+      if (data.sessionId) {
+        setSessionId(data.sessionId);
+      }
 
       if (res.status === 429) {
         setRateLimited(true);
@@ -125,7 +131,7 @@ export default function AiChatSection() {
         ...prev,
         {
           role: "assistant",
-          content: "Network error contacting the AI assistant. Please check your connection.",
+          content: "Network error occurred. Please check your connection or contact Irfan directly.",
         },
       ]);
     } finally {
@@ -134,6 +140,7 @@ export default function AiChatSection() {
   };
 
   const handleClearHistory = () => {
+    setSessionId(null);
     setMessages([
       {
         role: "assistant",
