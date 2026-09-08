@@ -247,12 +247,12 @@ export const PROJECTS: Project[] = [
     links: [
       { label: "PENS Autologin Script (GitHub Gist)", url: "https://gist.github.com/ChaosO9/61cea173a8d3ddfffe17d6e7111a8252", type: "github" },
       { label: "System Design", url: "https://drive.google.com/file/d/16qONnSptRgXirOfiw6-FowUjUt6sEGiA/view?usp=drive_link", type: "drive" },
-      { label: "Live Lab URL", url: "https://proxmox-c303-web.irfannoorhidayat.cloud/#v1:0:18:4:::::::", type: "demo" },
+      { label: "Live Lab URL (Inactive)", url: "https://proxmox-c303-web.irfannoorhidayat.cloud/#v1:0:18:4:::::::", type: "demo" },
     ],
     screenshots: [
-      { label: "Tunnel & Proxmox Setup Screenshot 1", url: "https://drive.google.com/file/d/1LVGCJGnI2TujPpXO8LwMV8OxHimfbaCB/view?usp=drive_link" },
-      { label: "Proxmox Web Console Screenshot 2", url: "https://drive.google.com/file/d/1RrDguQfNnkez34d3lXxKWaZleaSFTnwS/view?usp=drive_link" },
-      { label: "Grafana & Prometheus Screenshot 3", url: "https://drive.google.com/file/d/1_Gb2MQ0rJEi61Gi7mJKaxiuaiCuLzbhM/view?usp=drive_link" },
+      { label: "Proxmox VE Web Control Exposed Publicly", url: "https://drive.google.com/file/d/1LVGCJGnI2TujPpXO8LwMV8OxHimfbaCB/view?usp=drive_link" },
+      { label: "Physical Server run Proxmox", url: "https://drive.google.com/file/d/1RrDguQfNnkez34d3lXxKWaZleaSFTnwS/view?usp=drive_link" },
+      { label: "Cloudflare Tunnel on Proxmox", url: "https://drive.google.com/file/d/1_Gb2MQ0rJEi61Gi7mJKaxiuaiCuLzbhM/view?usp=drive_link" },
     ],
     featured: true,
   },
@@ -273,8 +273,8 @@ export const PROJECTS: Project[] = [
       { label: "Client Configuration", url: "https://drive.google.com/file/d/1XpzXgCn6h5TvBfJYbzzIjtRaIAtcit_c/view?usp=drive_link", type: "drive" },
     ],
     screenshots: [
-      { label: "WireGuard Tunnel Screenshot 1", url: "https://drive.google.com/file/d/1Ejwqq41OZFjJ17z_Oh2BpctPokLYMFuF/view?usp=drive_link" },
-      { label: "Ping & Latency Migration Screenshot 2", url: "https://drive.google.com/file/d/1UXabqCQIIINGCKQTWLsfYIioFvdwzFyJ/view?usp=drive_link" },
+      { label: "WireGuard Connected on Client", url: "https://drive.google.com/file/d/1Ejwqq41OZFjJ17z_Oh2BpctPokLYMFuF/view?usp=drive_link" },
+      { label: "WireGuard Status on Server", url: "https://drive.google.com/file/d/1UXabqCQIIINGCKQTWLsfYIioFvdwzFyJ/view?usp=drive_link" },
     ],
     featured: true,
   },
@@ -348,11 +348,11 @@ export const PROJECTS: Project[] = [
       { label: "GitHub Repository", url: "https://github.com/ChaosO9/tugas-akhir-2", type: "github" },
       { label: "Final Project Documentation (Indonesian)", url: "https://drive.google.com/file/d/1ipFj1RThHsa4K72cJDuzx65GxrQ7ft0k/view?usp=drive_link", type: "drive" },
       { label: "Project Poster (Canva)", url: "https://canva.link/xz8x84h8jk1es1j", type: "doc" },
-      { label: "Architecture Notes (OneNote)", url: "https://1drv.ms/o/c/43841cc173b114ac/IgCsFLFzwRyEIIBDSjAAAAAAAch92lb2VvQlew2jAdIiuyg?e=1qVUmP", type: "doc" },
+      { label: "Project Notes (OneNote)", url: "https://1drv.ms/o/c/43841cc173b114ac/IgCsFLFzwRyEIIBDSjAAAAAAAch92lb2VvQlew2jAdIiuyg?e=1qVUmP", type: "doc" },
       { label: "SATUSEHAT Playbook Doc", url: "https://satusehat.kemkes.go.id/platform/docs/id/playbook/", type: "doc" },
     ],
     screenshots: [
-      { label: "Inpatient Interoperability Screenshot", url: "https://drive.google.com/file/d/1PrqkHf29qVJmMU7wEYVu93VcwtF05_Yd/view?usp=drive_link" },
+      { label: "Interoperability Status in SATUSEHAT Platform", url: "https://drive.google.com/file/d/1PrqkHf29qVJmMU7wEYVu93VcwtF05_Yd/view?usp=drive_link" },
     ],
     featured: true,
   },
@@ -372,8 +372,8 @@ export const PROJECTS: Project[] = [
       { label: "GitHub Repository", url: "https://github.com/ChaosO9/jlpt-bot", type: "github" },
     ],
     screenshots: [
-      { label: "Waiting Room & Bot Execution Screenshot 1", url: "https://drive.google.com/file/d/1U0jUMgdgRkTF1bedRvIz2W2cQ-T6m-L7/view?usp=drive_link" },
-      { label: "Form Auto-fill & Seat Confirmation Screenshot 2", url: "https://drive.google.com/file/d/1TwxrV8D-gz0I3xHkMpNRGjobWk2R-z_z/view?usp=drive_link" },
+      { label: "Main Program Running", url: "https://drive.google.com/file/d/1U0jUMgdgRkTF1bedRvIz2W2cQ-T6m-L7/view?usp=drive_link" },
+      { label: "Registration Confirmation from JLPT", url: "https://drive.google.com/file/d/1TwxrV8D-gz0I3xHkMpNRGjobWk2R-z_z/view?usp=drive_link" },
     ],
   },
   {
@@ -391,7 +391,7 @@ export const PROJECTS: Project[] = [
     links: [],
     screenshots: [
       { label: "ROMANSY Dashboard Screenshot", url: "https://drive.google.com/file/d/1hVsmkgDfdgDiXrSWBmNef-DuVUkLy1KX/view?usp=drive_link" },
-      { label: "PTC Traffic Control Screenshot", url: "https://drive.google.com/file/d/1y2IKVn4_TtN219Hd2u6_6V66ijEm1sqY/view?usp=drive_link" },
+      { label: "PTC Dashboard Screenshot", url: "https://drive.google.com/file/d/1y2IKVn4_TtN219Hd2u6_6V66ijEm1sqY/view?usp=drive_link" },
     ],
   },
   {
@@ -406,9 +406,9 @@ export const PROJECTS: Project[] = [
     role: "Solo Developer & Technical Analyst — Designed architecture, built UI components, and integrated Bedrock AI models.",
     solution: "Constructed an enterprise-grade recruiting hub with ASP.NET Core and Blazor. Integrated AWS Bedrock foundation models to rank resumes automatically against education, skills, and experience criteria, and implemented automated stakeholder email updates.",
     results: "Replaced scattered spreadsheets with a unified single system of record, cutting applicant screening time by over 60%.",
-    links: [],
-    screenshots: [
-      { label: "TalentTrail Bedrock CV Screening Screenshot", url: "https://drive.google.com/file/d/14q0BHMaXpj9l1zCtVALtE7POAl-hDxdO/view?usp=drive_link" },
+    screenshots: [],
+    links: [
+      { label: "TalentTrail App Presentation", url: "https://drive.google.com/file/d/14q0BHMaXpj9l1zCtVALtE7POAl-hDxdO/view?usp=drive_link", type: "drive" },
     ],
     featured: true,
   },
@@ -442,7 +442,7 @@ export const PROJECTS: Project[] = [
       { label: "System Overview", url: "https://drive.google.com/file/d/1w2TYB-P9XLqlciZL2zrfKkVDnuNVA5LT/view?usp=drive_link", type: "drive" },
     ],
     screenshots: [
-      { label: "Windows Guest on Ubuntu Host Screenshot", url: "https://drive.google.com/file/d/1zzcNLo8DT5DzLSv0dPmO0h_8Np0hTYdR/view?usp=drive_link" },
+      { label: "Windows Guest on Ubuntu Host", url: "https://drive.google.com/file/d/1zzcNLo8DT5DzLSv0dPmO0h_8Np0hTYdR/view?usp=drive_link" },
     ],
   },
   {
@@ -459,9 +459,9 @@ export const PROJECTS: Project[] = [
     results: "Reduced staging deployment cycle time from hours to minutes, creating an auditable history of all releases.",
     links: [],
     screenshots: [
-      { label: "Pipeline Execution Screenshot 1", url: "https://drive.google.com/file/d/1duipzg2z9KKl2ZT7G_0PAfkIHjgOX0s5/view?usp=drive_link" },
-      { label: "Agent Pool Status Screenshot 2", url: "https://drive.google.com/file/d/17eA1C8O8WjSok6uJPKhKaxB9vOHlc9UF/view?usp=drive_link" },
-      { label: "Staging Release Verification Screenshot 3", url: "https://drive.google.com/file/d/1OOKyFl4rWfBAgl93j_0hf2UUldNhjD5o/view?usp=drive_link" },
+      { label: "Agent Pool's Job History", url: "https://drive.google.com/file/d/1duipzg2z9KKl2ZT7G_0PAfkIHjgOX0s5/view?usp=drive_link" },
+      { label: "Pipeline Status Example", url: "https://drive.google.com/file/d/17eA1C8O8WjSok6uJPKhKaxB9vOHlc9UF/view?usp=drive_link" },
+      { label: "Job Step Details", url: "https://drive.google.com/file/d/1OOKyFl4rWfBAgl93j_0hf2UUldNhjD5o/view?usp=drive_link" },
     ],
   },
   {
@@ -477,7 +477,7 @@ export const PROJECTS: Project[] = [
     solution: "Created a responsive React + Vite application utilizing Supabase database and authentication. Containerized the web application with Docker and deployed to Google Cloud Run.",
     results: "Delivered instantaneous QR verification and real-time attendee tracking with sub-second check-ins.",
     links: [
-      { label: "Live Demo", url: "https://event-manager-app.irfannoorhidayat.cloud/", type: "demo" },
+      { label: "Live Demo (Inactive)", url: "https://event-manager-app.irfannoorhidayat.cloud/", type: "demo" },
     ],
   },
   {
