@@ -11,6 +11,7 @@ import {
   Layers,
   X,
   FileText,
+  Camera,
 } from "lucide-react";
 import { PROJECTS, Project } from "@/data/portfolioData";
 import ProjectDetailModal from "./ProjectDetailModal";
@@ -286,6 +287,16 @@ export default function ProjectsSection({
                         )}
                       </a>
                     ))}
+                    {project.screenshots && project.screenshots.length > 0 && (
+                      <button
+                        onClick={() => setDetailProject(project)}
+                        title={`${project.screenshots.length} visual screenshot(s) available in details`}
+                        className="text-cyber-slate/70 hover:text-amber-400 transition flex items-center gap-1 text-[11px] font-mono"
+                      >
+                        <Camera className="w-3.5 h-3.5" />
+                        <span>{project.screenshots.length}</span>
+                      </button>
+                    )}
                   </div>
                 </div>
 

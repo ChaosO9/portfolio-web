@@ -49,13 +49,10 @@ export default function TechStackSection({ onSelectSkill }: TechStackProps) {
                     key={item.name}
                     onClick={() => onSelectSkill(item.skillKey)}
                     title={`Click to filter projects built with ${item.name}`}
-                    className="px-3 py-2 rounded-lg bg-navy-800 hover:bg-cyber-teal/15 text-cyber-light hover:text-cyber-teal border border-navy-600 hover:border-cyber-teal/60 text-xs font-mono transition duration-150 flex items-center gap-2 group cursor-pointer"
+                    className="px-3.5 py-2 rounded-lg bg-navy-800 hover:bg-cyber-teal/15 text-cyber-light hover:text-cyber-teal border border-navy-600 hover:border-cyber-teal/60 text-xs font-mono transition duration-150 flex items-center gap-2 group cursor-pointer"
                   >
                     <span>{item.name}</span>
-                    <span className="px-1.5 py-0.5 rounded bg-navy-900/80 text-[10px] text-cyber-teal font-semibold group-hover:bg-cyber-teal group-hover:text-navy-900 transition">
-                      {item.projectCount} {item.projectCount === 1 ? "Project" : "Projects"}
-                    </span>
-                    <ArrowUpRight className="w-3 h-3 text-cyber-teal opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-cyber-teal opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
                 ))}
               </div>

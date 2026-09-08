@@ -4,6 +4,11 @@ export interface ProjectLink {
   type: "github" | "demo" | "drive" | "doc" | "other";
 }
 
+export interface ProjectScreenshot {
+  label: string;
+  url: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -17,6 +22,7 @@ export interface Project {
   solution: string;
   results: string;
   links: ProjectLink[];
+  screenshots?: ProjectScreenshot[];
   featured?: boolean;
 }
 
@@ -239,9 +245,14 @@ export const PROJECTS: Project[] = [
     solution: "Configured Cloudflare Zero Trust with Cloudflare Tunnel (cloudflared) on the Proxmox host to route all web control panel traffic through encrypted outbound tunnels. Added automated Bash scripts for keeping network sessions alive, and extended tunnels to internal Grafana & Prometheus monitoring.",
     results: "Achieved secure zero-trust remote access to Proxmox and monitoring dashboards from anywhere in the world with zero open ports on the restricted local network.",
     links: [
-      { label: "Autologin Script", url: "https://drive.google.com/file/d/1LVGCJGnI2TujPpXO8LwMV8OxHimfbaCB/view?usp=drive_link", type: "drive" },
-      { label: "System Design", url: "https://drive.google.com/file/d/1RrDguQfNnkez34d3lXxKWaZleaSFTnwS/view?usp=drive_link", type: "drive" },
+      { label: "PENS Autologin Script (GitHub Gist)", url: "https://gist.github.com/ChaosO9/61cea173a8d3ddfffe17d6e7111a8252", type: "github" },
+      { label: "System Design", url: "https://drive.google.com/file/d/16qONnSptRgXirOfiw6-FowUjUt6sEGiA/view?usp=drive_link", type: "drive" },
       { label: "Live Lab URL", url: "https://proxmox-c303-web.irfannoorhidayat.cloud/#v1:0:18:4:::::::", type: "demo" },
+    ],
+    screenshots: [
+      { label: "Tunnel & Proxmox Setup Screenshot 1", url: "https://drive.google.com/file/d/1LVGCJGnI2TujPpXO8LwMV8OxHimfbaCB/view?usp=drive_link" },
+      { label: "Proxmox Web Console Screenshot 2", url: "https://drive.google.com/file/d/1RrDguQfNnkez34d3lXxKWaZleaSFTnwS/view?usp=drive_link" },
+      { label: "Grafana & Prometheus Screenshot 3", url: "https://drive.google.com/file/d/1_Gb2MQ0rJEi61Gi7mJKaxiuaiCuLzbhM/view?usp=drive_link" },
     ],
     featured: true,
   },
@@ -258,8 +269,12 @@ export const PROJECTS: Project[] = [
     solution: "Configured WireGuard on an AWS Ubuntu EC2 instance, enabling IPv4 forwarding and per-peer public/private key exchanges. Diagnosed high ping times on the initial US-East deployment and performed EBS snapshot migration to attach directly to an AP-Southeast (Singapore) instance.",
     results: "Successfully delivered an ultra-fast, encrypted private VPN tunnel that drastically reduced latency from Indonesia compared to US-based endpoints.",
     links: [
-      { label: "Architecture Diagram", url: "https://drive.google.com/file/d/1Ejwqq41OZFjJ17z_Oh2BpctPokLYMFuF/view?usp=drive_link", type: "drive" },
-      { label: "Client Configuration", url: "https://drive.google.com/file/d/1UXabqCQIIINGCKQTWLsfYIioFvdwzFyJ/view?usp=drive_link", type: "drive" },
+      { label: "System Architecture", url: "https://drive.google.com/file/d/1fOMzr1mvbXVpV5W6qGkAQ6es1_Nyp07t/view?usp=drive_link", type: "drive" },
+      { label: "Client Configuration", url: "https://drive.google.com/file/d/1XpzXgCn6h5TvBfJYbzzIjtRaIAtcit_c/view?usp=drive_link", type: "drive" },
+    ],
+    screenshots: [
+      { label: "WireGuard Tunnel Screenshot 1", url: "https://drive.google.com/file/d/1Ejwqq41OZFjJ17z_Oh2BpctPokLYMFuF/view?usp=drive_link" },
+      { label: "Ping & Latency Migration Screenshot 2", url: "https://drive.google.com/file/d/1UXabqCQIIINGCKQTWLsfYIioFvdwzFyJ/view?usp=drive_link" },
     ],
     featured: true,
   },
@@ -276,7 +291,7 @@ export const PROJECTS: Project[] = [
     solution: "Built a serverless RAG architecture that indexes portfolio projects and work history, utilizing AWS Bedrock foundation models and AWS Lambda to answer natural language questions in first person with strict rate limiting.",
     results: "Shipped an interactive AI chat interface deployed to the live portfolio, cutting recruiter evaluation time and showcasing hands-on generative AI integration.",
     links: [
-      { label: "Live Chatbot", url: "#ai-assistant", type: "demo" },
+      { label: "Live Portfolio Chatbot", url: "https://www.irfannoorhidayat.my.id#ai-assistant", type: "demo" },
     ],
     featured: true,
   },
@@ -293,7 +308,7 @@ export const PROJECTS: Project[] = [
     solution: "Applied COBIT frameworks to review, compile, and audit SOPs across IT Operations, IT Development Planning, Cyber Resilience, Digital Maturity, Security, Disaster Recovery Planning (DRP), Business Impact Analysis (BIA), and Agile Delivery.",
     results: "Successfully submitted verified compliance documentation for all 9 domains to meet OJK regulatory standards on schedule.",
     links: [
-      { label: "Classified Enterprise Doc", url: "#", type: "doc" },
+      { label: "Photo Documentation", url: "https://drive.google.com/file/d/1GHmSF_bGNLymat7ql1Unmr-zjupVwEOv/view?usp=drive_link", type: "drive" },
     ],
   },
   {
@@ -310,7 +325,10 @@ export const PROJECTS: Project[] = [
     results: "Production-ready backend with zero downtime deployments, independent service scalability, and automated testing from Git push to staging.",
     links: [
       { label: "GitHub Repository", url: "https://github.com/Bangkit-WowRack/Cloud-Computing", type: "github" },
-      { label: "Final Project Doc (ID)", url: "https://drive.google.com/file/d/18JCExFrldp1uRlFSbm6Hm-58IFQFa6Xj/view?usp=sharing", type: "drive" },
+      { label: "System Architecture", url: "https://drive.google.com/file/d/1mrO7TMAAwufuYYGBaEkJJgVx540v7BQb/view?usp=drive_link", type: "drive" },
+      { label: "Final Project Document (Indonesian)", url: "https://drive.google.com/file/d/14anS1TZ9AdAHCo6Us1mHcJUFMnBSpxzO/view?usp=sharing", type: "drive" },
+      { label: "SRS CloudRaya", url: "https://drive.google.com/file/d/18JCExFrldp1uRlFSbm6Hm-58IFQFa6Xj/view?usp=drive_link", type: "drive" },
+      { label: "Demo Video (YouTube)", url: "https://youtu.be/HfoTE9qizPw?is=XduFo9RVsi6n2D4e", type: "demo" },
     ],
     featured: true,
   },
@@ -328,7 +346,13 @@ export const PROJECTS: Project[] = [
     results: "Achieved seamless synchronization with the national SATUSEHAT platform across all 23 inpatient modules with 0% extra read overhead on production.",
     links: [
       { label: "GitHub Repository", url: "https://github.com/ChaosO9/tugas-akhir-2", type: "github" },
-      { label: "Final Project Doc", url: "https://drive.google.com/file/d/1PrqkHf29qVJmMU7wEYVu93VcwtF05_Yd/view?usp=sharing", type: "drive" },
+      { label: "Final Project Documentation (Indonesian)", url: "https://drive.google.com/file/d/1ipFj1RThHsa4K72cJDuzx65GxrQ7ft0k/view?usp=drive_link", type: "drive" },
+      { label: "Project Poster (Canva)", url: "https://canva.link/xz8x84h8jk1es1j", type: "doc" },
+      { label: "Architecture Notes (OneNote)", url: "https://1drv.ms/o/c/43841cc173b114ac/IgCsFLFzwRyEIIBDSjAAAAAAAch92lb2VvQlew2jAdIiuyg?e=1qVUmP", type: "doc" },
+      { label: "SATUSEHAT Playbook Doc", url: "https://satusehat.kemkes.go.id/platform/docs/id/playbook/", type: "doc" },
+    ],
+    screenshots: [
+      { label: "Inpatient Interoperability Screenshot", url: "https://drive.google.com/file/d/1PrqkHf29qVJmMU7wEYVu93VcwtF05_Yd/view?usp=drive_link" },
     ],
     featured: true,
   },
@@ -345,8 +369,11 @@ export const PROJECTS: Project[] = [
     solution: "Engineered a Playwright automation script deployed on an AWS EC2 instance. The bot maintains active queue sessions in Cloudflare Waiting Rooms, auto-fills registration profiles instantly upon opening, and safely leaves the CAPTCHA and payment verification to manual completion.",
     results: "Secured a confirmed seat for the JLPT N4 exam in Jakarta within the first 60 seconds of registration opening.",
     links: [
-      { label: "System Screenshot 1", url: "https://drive.google.com/file/d/1U0jUMgdgRkTF1bedRvIz2W2cQ-T6m-L7/view?usp=drive_link", type: "drive" },
-      { label: "System Screenshot 2", url: "https://drive.google.com/file/d/1TwxrV8D-gz0I3xHkMpNRGjobWk2R-z_z/view?usp=drive_link", type: "drive" },
+      { label: "GitHub Repository", url: "https://github.com/ChaosO9/jlpt-bot", type: "github" },
+    ],
+    screenshots: [
+      { label: "Waiting Room & Bot Execution Screenshot 1", url: "https://drive.google.com/file/d/1U0jUMgdgRkTF1bedRvIz2W2cQ-T6m-L7/view?usp=drive_link" },
+      { label: "Form Auto-fill & Seat Confirmation Screenshot 2", url: "https://drive.google.com/file/d/1TwxrV8D-gz0I3xHkMpNRGjobWk2R-z_z/view?usp=drive_link" },
     ],
   },
   {
@@ -361,8 +388,10 @@ export const PROJECTS: Project[] = [
     role: "Ongoing Individual Contributor — Developed new modules and integrated APIs with Microsoft 365 services.",
     solution: "Digitized contract renewals and in-city travel approvals by integrating webhook triggers to Microsoft Teams via Power Automate and n8n. Designed and launched the PTC (People Traffic Control) sub-application to log on-site presence in real time.",
     results: "Eliminated days of manual approval lag, providing company leadership with end-to-end real-time visibility into internal requests and facility access.",
-    links: [
-      { label: "Internal System (Classified)", url: "#", type: "doc" },
+    links: [],
+    screenshots: [
+      { label: "ROMANSY Dashboard Screenshot", url: "https://drive.google.com/file/d/1hVsmkgDfdgDiXrSWBmNef-DuVUkLy1KX/view?usp=drive_link" },
+      { label: "PTC Traffic Control Screenshot", url: "https://drive.google.com/file/d/1y2IKVn4_TtN219Hd2u6_6V66ijEm1sqY/view?usp=drive_link" },
     ],
   },
   {
@@ -377,8 +406,9 @@ export const PROJECTS: Project[] = [
     role: "Solo Developer & Technical Analyst — Designed architecture, built UI components, and integrated Bedrock AI models.",
     solution: "Constructed an enterprise-grade recruiting hub with ASP.NET Core and Blazor. Integrated AWS Bedrock foundation models to rank resumes automatically against education, skills, and experience criteria, and implemented automated stakeholder email updates.",
     results: "Replaced scattered spreadsheets with a unified single system of record, cutting applicant screening time by over 60%.",
-    links: [
-      { label: "System Overview", url: "https://drive.google.com/file/d/14q0BHMaXpj9l1zCtVALtE7POAl-hDxdO/view?usp=drive_link", type: "drive" },
+    links: [],
+    screenshots: [
+      { label: "TalentTrail Bedrock CV Screening Screenshot", url: "https://drive.google.com/file/d/14q0BHMaXpj9l1zCtVALtE7POAl-hDxdO/view?usp=drive_link" },
     ],
     featured: true,
   },
@@ -394,9 +424,7 @@ export const PROJECTS: Project[] = [
     role: "Solo Project — Configured server routing, virtual hosts, and SSL auto-renewals.",
     solution: "Deployed and tuned an NGINX reverse proxy on a Google Cloud Compute Engine VM, acting as a single entry point directing subdomains to respective containerized workloads.",
     results: "Streamlined DNS configuration and traffic routing, establishing a single reliable gateway for hosted services.",
-    links: [
-      { label: "Internal Project", url: "#", type: "doc" },
-    ],
+    links: [],
   },
   {
     id: "nested-virtualization-gcp",
@@ -411,7 +439,10 @@ export const PROJECTS: Project[] = [
     solution: "Provisioned a custom GCP VM with nested virtualization enabled, installed QEMU/KVM on Ubuntu, and configured network bridging to run a fully functional Windows guest accessible via RDP.",
     results: "Enabled Windows-dependent enterprise workloads on cost-effective cloud Linux instances without needing dedicated bare-metal servers.",
     links: [
-      { label: "System Architecture", url: "https://drive.google.com/file/d/1zzcNLo8DT5DzLSv0dPmO0h_8Np0hTYdR/view?usp=drive_link", type: "drive" },
+      { label: "System Overview", url: "https://drive.google.com/file/d/1w2TYB-P9XLqlciZL2zrfKkVDnuNVA5LT/view?usp=drive_link", type: "drive" },
+    ],
+    screenshots: [
+      { label: "Windows Guest on Ubuntu Host Screenshot", url: "https://drive.google.com/file/d/1zzcNLo8DT5DzLSv0dPmO0h_8Np0hTYdR/view?usp=drive_link" },
     ],
   },
   {
@@ -426,9 +457,11 @@ export const PROJECTS: Project[] = [
     role: "DevOps Engineer — Set up the agent pool and wrote pipeline YAML definitions.",
     solution: "Installed and configured a self-hosted Azure DevOps agent pool on dedicated infrastructure and wrote automated multi-stage pipelines to build, test, and deploy verified commits directly to staging.",
     results: "Reduced staging deployment cycle time from hours to minutes, creating an auditable history of all releases.",
-    links: [
-      { label: "Pipeline Overview 1", url: "https://drive.google.com/file/d/1duipzg2z9KKl2ZT7G_0PAfkIHjgOX0s5/view?usp=drive_link", type: "drive" },
-      { label: "Pipeline Overview 2", url: "https://drive.google.com/file/d/17eA1C8O8WjSok6uJPKhKaxB9vOHlc9UF/view?usp=drive_link", type: "drive" },
+    links: [],
+    screenshots: [
+      { label: "Pipeline Execution Screenshot 1", url: "https://drive.google.com/file/d/1duipzg2z9KKl2ZT7G_0PAfkIHjgOX0s5/view?usp=drive_link" },
+      { label: "Agent Pool Status Screenshot 2", url: "https://drive.google.com/file/d/17eA1C8O8WjSok6uJPKhKaxB9vOHlc9UF/view?usp=drive_link" },
+      { label: "Staging Release Verification Screenshot 3", url: "https://drive.google.com/file/d/1OOKyFl4rWfBAgl93j_0hf2UUldNhjD5o/view?usp=drive_link" },
     ],
   },
   {

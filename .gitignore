@@ -6,6 +6,7 @@
 
 # testing
 /coverage
+/scratch
 
 # next.js
 /.next/
@@ -20,6 +21,7 @@
 *.html
 Profile.pdf
 Irfan_Portfolio_Library.docx
+Irfan_Portfolio_Library.pdf
 
 # debug
 npm-debug.log*
