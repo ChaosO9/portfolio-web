@@ -2,32 +2,103 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
+import {
+  BedrockAgentRuntimeClient,
+  RetrieveAndGenerateCommand,
+} from "@aws-sdk/client-bedrock-agent-runtime";
 import { PROFILE_CONTEXT_PROMPT, PROJECTS, EXPERIENCES } from "@/data/portfolioData";
 
-const region = process.env.AWS_REGION || "us-east-1";
+const region = process.env.AWS_REGION || "ap-southeast-1";
+const bedrockRegion = process.env.AWS_BEDROCK_REGION || "ap-southeast-2";
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 const modelId = process.env.AWS_BEDROCK_MODEL_ID || "anthropic.claude-3-haiku-20240307-v1:0";
+const knowledgeBaseId = process.env.AWS_BEDROCK_KB_ID || "CH3JGLS5OS";
 
-export const isBedrockConfigured = Boolean(accessKeyId && secretAccessKey);
+// Determine environment: Lambda runtime or local
+const isAwsLambda = Boolean(process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.AWS_EXECUTION_ENV);
+const hasExplicitKeys = Boolean(accessKeyId && secretAccessKey);
+
+export const isBedrockConfigured = isAwsLambda || hasExplicitKeys;
 
 let bedrockClient: BedrockRuntimeClient | null = null;
+let agentClient: BedrockAgentRuntimeClient | null = null;
 
-if (isBedrockConfigured) {
-  bedrockClient = new BedrockRuntimeClient({
-    region,
-    credentials: {
-      accessKeyId: accessKeyId!,
-      secretAccessKey: secretAccessKey!,
-    },
-  });
+try {
+  if (hasExplicitKeys) {
+    // 1. Explicit keys from .env.local (local development)
+    bedrockClient = new BedrockRuntimeClient({
+      region: bedrockRegion,
+      credentials: {
+        accessKeyId: accessKeyId!,
+        secretAccessKey: secretAccessKey!,
+      },
+    });
+    agentClient = new BedrockAgentRuntimeClient({
+      region: bedrockRegion,
+      credentials: {
+        accessKeyId: accessKeyId!,
+        secretAccessKey: secretAccessKey!,
+      },
+    });
+  } else if (isAwsLambda) {
+    // 2. AWS Lambda Execution Role provided by SST permissions
+    bedrockClient = new BedrockRuntimeClient({ region: bedrockRegion });
+    agentClient = new BedrockAgentRuntimeClient({ region: bedrockRegion });
+  } else {
+    // 3. Try default AWS SDK credential chain (e.g. AWS CLI profile)
+    bedrockClient = new BedrockRuntimeClient({ region: bedrockRegion });
+    agentClient = new BedrockAgentRuntimeClient({ region: bedrockRegion });
+  }
+} catch (err) {
+  console.warn("Bedrock client initialization warning:", err);
 }
 
 export async function askBedrock(
   userPrompt: string,
   history: { role: "user" | "assistant"; content: string }[] = []
 ): Promise<{ text: string; mode: "bedrock" | "demo" }> {
-  // If AWS Bedrock credentials exist, attempt live call
+  // 1. Try Bedrock Knowledge Base RAG first if configured
+  if (agentClient && knowledgeBaseId) {
+    try {
+      const modelArn = `arn:aws:bedrock:${bedrockRegion}::foundation-model/${modelId}`;
+      const ragCommand = new RetrieveAndGenerateCommand({
+        input: { text: userPrompt },
+        retrieveAndGenerateConfiguration: {
+          type: "KNOWLEDGE_BASE",
+          knowledgeBaseConfiguration: {
+            knowledgeBaseId,
+            modelArn,
+            generationConfiguration: {
+              promptTemplate: {
+                textPromptTemplate: `You are the personal AI Assistant representing Irfan Noor Hidayat, a Cloud Engineer & DevOps Developer.
+Answer the user's question conversationally in the first person ("I", "my experience", "my projects") based on the retrieved context from my resume and portfolio library.
+Be concise, accurate, and structured with markdown bullets where helpful. If information is not found in the context, speak to my general background in cloud and DevOps.
+
+Retrieved Context:
+$search_results$
+
+User Question: $query$
+Assistant Answer:`,
+              },
+            },
+          },
+        },
+      });
+
+      const ragResponse = await agentClient.send(ragCommand);
+      if (ragResponse.output?.text) {
+        return {
+          text: ragResponse.output.text,
+          mode: "bedrock",
+        };
+      }
+    } catch (ragErr) {
+      console.warn("Knowledge Base RAG failed, falling back to direct model invocation:", ragErr);
+    }
+  }
+
+  // 2. Fallback to direct model invocation (Prompt Context)
   if (bedrockClient) {
     try {
       const messages = [
