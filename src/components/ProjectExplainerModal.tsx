@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { X, Sparkles, AlertCircle, Bot, Send } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 import { useQuota } from "@/context/QuotaContext";
+import MarkdownRenderer from "./MarkdownRenderer";
 
 interface ProjectExplainerModalProps {
   projectTitle: string | null;
@@ -164,8 +165,8 @@ export default function ProjectExplainerModal({
           )}
 
           {!loading && explanation && (
-            <div className="space-y-3 whitespace-pre-wrap text-cyber-light text-sm sm:text-base bg-navy-800/40 p-5 rounded-xl border border-navy-600/60 leading-relaxed font-sans">
-              {explanation}
+            <div className="bg-navy-800/40 p-5 sm:p-6 rounded-xl border border-navy-600/60 leading-relaxed font-sans">
+              <MarkdownRenderer content={explanation} />
             </div>
           )}
         </div>

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 import { useQuota } from "@/context/QuotaContext";
+import MarkdownRenderer from "./MarkdownRenderer";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -255,11 +256,15 @@ export default function AiChatSection() {
                 <div
                   className={`p-4 rounded-2xl text-xs sm:text-sm leading-relaxed ${
                     isUser
-                      ? "bg-cyber-teal text-navy-900 font-medium rounded-tr-none"
-                      : "bg-navy-700 text-cyber-light border border-navy-600/70 rounded-tl-none whitespace-pre-wrap"
+                      ? "bg-cyber-teal text-navy-900 font-medium rounded-tr-none whitespace-pre-wrap"
+                      : "bg-navy-700 text-cyber-light border border-navy-600/70 rounded-tl-none"
                   }`}
                 >
-                  {msg.content}
+                  {isUser ? (
+                    msg.content
+                  ) : (
+                    <MarkdownRenderer content={msg.content} />
+                  )}
                 </div>
               </div>
             );
