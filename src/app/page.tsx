@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { QuotaProvider } from "@/context/QuotaContext";
 import ParticlesBackground from "@/components/ParticlesBackground";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -25,30 +26,32 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-navy-800 text-cyber-light overflow-hidden">
-      {/* Interactive Canvas Background */}
-      <ParticlesBackground />
+    <QuotaProvider>
+      <div className="relative min-h-screen bg-navy-800 text-cyber-light overflow-hidden">
+        {/* Interactive Canvas Background */}
+        <ParticlesBackground />
 
-      {/* Global Navigation */}
-      <Navbar />
+        {/* Global Navigation */}
+        <Navbar />
 
-      {/* Main Sections Content */}
-      <main className="relative z-10">
-        <Hero />
-        <About />
-        <ExperienceSection onSelectSkill={handleSelectSkill} />
-        <EducationSection />
-        <TechStackSection onSelectSkill={handleSelectSkill} />
-        <ProjectsSection
-          activeSkillFilter={activeSkillFilter}
-          onSelectSkillFilter={setActiveSkillFilter}
-        />
-        <CertificationsSection />
-        <AiChatSection />
-      </main>
+        {/* Main Sections Content */}
+        <main className="relative z-10">
+          <Hero />
+          <About />
+          <ExperienceSection onSelectSkill={handleSelectSkill} />
+          <EducationSection />
+          <TechStackSection onSelectSkill={handleSelectSkill} />
+          <ProjectsSection
+            activeSkillFilter={activeSkillFilter}
+            onSelectSkillFilter={setActiveSkillFilter}
+          />
+          <CertificationsSection />
+          <AiChatSection />
+        </main>
 
-      {/* Footer & Floating Socials */}
-      <Footer />
-    </div>
+        {/* Footer & Floating Socials */}
+        <Footer />
+      </div>
+    </QuotaProvider>
   );
 }

@@ -12,6 +12,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
+import { useQuota } from "@/context/QuotaContext";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -27,6 +28,13 @@ const PRESET_PROMPTS = [
 ];
 
 export default function AiChatSection() {
+  const {
+    remaining: quotaRemaining,
+    limit: quotaLimit,
+    isRateLimited: rateLimited,
+    updateQuota,
+  } = useQuota();
+
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
@@ -35,28 +43,25 @@ export default function AiChatSection() {
   ]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const [quotaRemaining, setQuotaRemaining] = useState<number>(5);
-  const [rateLimited, setRateLimited] = useState(false);
   const [mode, setMode] = useState<"bedrock" | "demo">("demo");
   const [sessionId, setSessionId] = useState<string | null>(null);
 
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
-  // Fetch initial IP quota
+  // Check Bedrock configuration status
   useEffect(() => {
-    async function checkQuota() {
+    async function checkStatus() {
       try {
         const res = await fetch("/api/chat");
         if (res.ok) {
           const data = await res.json();
-          setQuotaRemaining(data.remaining);
           if (data.isBedrockConfigured) setMode("bedrock");
         }
       } catch (err) {
-        console.warn("Could not check quota:", err);
+        console.warn("Could not check assistant status:", err);
       }
     }
-    checkQuota();
+    checkStatus();
   }, []);
 
   // Scroll to bottom when messages update
@@ -93,14 +98,13 @@ export default function AiChatSection() {
       }
 
       if (res.status === 429) {
-        setRateLimited(true);
-        setQuotaRemaining(0);
+        updateQuota(0, data.limit || quotaLimit);
         setMessages((prev) => [
           ...prev,
           {
             role: "assistant",
             content:
-              "You have reached the maximum limit of 5 queries per IP address. Please feel free to reach out to Irfan directly via WhatsApp or Email below!",
+              `You have reached the maximum limit of ${data.limit || quotaLimit} queries per IP address. Please feel free to reach out to Irfan directly via WhatsApp or Email below!`,
           },
         ]);
       } else if (!res.ok) {
@@ -121,8 +125,7 @@ export default function AiChatSection() {
           },
         ]);
         if (typeof data.remaining === "number") {
-          setQuotaRemaining(data.remaining);
-          if (data.remaining === 0) setRateLimited(true);
+          updateQuota(data.remaining, data.limit);
         }
         if (data.mode) setMode(data.mode);
       }
@@ -165,7 +168,7 @@ export default function AiChatSection() {
           <span>
             Quota:{" "}
             <strong className={quotaRemaining > 0 ? "text-cyber-teal" : "text-amber-400"}>
-              {quotaRemaining}/5
+              {quotaRemaining}/{quotaLimit}
             </strong>{" "}
             queries left
           </span>
@@ -283,7 +286,7 @@ export default function AiChatSection() {
             <div className="flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0" />
               <span>
-                Daily query quota reached (5/5 requests). Connect with Irfan directly:
+                Daily query quota reached ({quotaLimit}/{quotaLimit} requests). Connect with Irfan directly:
               </span>
             </div>
             <div className="flex gap-2 flex-shrink-0">
@@ -320,7 +323,7 @@ export default function AiChatSection() {
             disabled={loading || rateLimited}
             placeholder={
               rateLimited
-                ? "Quota limit reached (5/5 queries per IP). Please contact directly."
+                ? `Quota limit reached (${quotaLimit}/${quotaLimit} queries per IP). Please contact directly.`
                 : "Ask about Irfan's cloud architectures, microservices, or experience..."
             }
             className="w-full bg-navy-800 text-cyber-light px-4 py-3 rounded-xl border border-navy-600 text-xs sm:text-sm font-mono focus:outline-none focus:border-cyber-teal placeholder:text-cyber-slate/50 transition disabled:opacity-50"

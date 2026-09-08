@@ -47,8 +47,8 @@ A modern, high-performance portfolio web application for **Irfan Noor Hidayat**,
 
 ### 6. AWS Bedrock AI Assistant with IP Rate Limiter
 - Server-side route handler at [`/api/chat`](./src/app/api/chat/route.ts) using `@aws-sdk/client-bedrock-runtime`.
-- **Strict Rate Limiting**: In-memory rate limiter caps queries at **5 requests per IP address**.
-- **Live Quota Display**: `⚡ Quota: 5/5 queries remaining` badge updates in real time.
+- **Strict Rate Limiting**: In-memory rate limiter caps queries at **15 requests per IP address**.
+- **Live Quota Display**: `⚡ Quota: 15/15 queries remaining` badge updates in real time.
 - **Graceful Fallback**: High-fidelity offline demo engine when AWS credentials are not set in `.env.local`, allowing recruiters to test conversational answers without incurring cloud costs.
 
 ### 7. Verified Credential Cards

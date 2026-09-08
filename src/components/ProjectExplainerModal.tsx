@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { X, Sparkles, AlertCircle, Bot, Send } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
+import { useQuota } from "@/context/QuotaContext";
 
 interface ProjectExplainerModalProps {
   projectTitle: string | null;
@@ -13,9 +14,15 @@ export default function ProjectExplainerModal({
   projectTitle,
   onClose,
 }: ProjectExplainerModalProps) {
+  const {
+    remaining: quotaRemaining,
+    limit: quotaLimit,
+    isRateLimited: globalRateLimited,
+    updateQuota,
+  } = useQuota();
+
   const [loading, setLoading] = useState(true);
   const [explanation, setExplanation] = useState<string>("");
-  const [quotaRemaining, setQuotaRemaining] = useState<number | null>(null);
   const [rateLimited, setRateLimited] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [mode, setMode] = useState<"bedrock" | "demo">("demo");
@@ -42,13 +49,19 @@ export default function ProjectExplainerModal({
         if (!isMounted) return;
 
         if (res.status === 429) {
+          updateQuota(0, data.limit || quotaLimit);
           setRateLimited(true);
-          setErrorMsg(data.error || "Rate limit reached (5 requests/IP).");
+          setErrorMsg(
+            data.error ||
+              `Rate limit reached (${data.limit || quotaLimit} queries/IP). Please contact directly.`
+          );
         } else if (!res.ok) {
           setErrorMsg(data.error || "Failed to generate project explanation.");
         } else {
           setExplanation(data.response);
-          setQuotaRemaining(data.remaining);
+          if (typeof data.remaining === "number") {
+            updateQuota(data.remaining, data.limit);
+          }
           if (data.mode) setMode(data.mode);
         }
       } catch (err) {
@@ -64,7 +77,7 @@ export default function ProjectExplainerModal({
     return () => {
       isMounted = false;
     };
-  }, [projectTitle]);
+  }, [projectTitle, updateQuota, quotaLimit]);
 
   if (!projectTitle) return null;
 
@@ -98,15 +111,15 @@ export default function ProjectExplainerModal({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-cyber-slate hover:text-cyber-white hover:bg-navy-700 transition"
-            aria-label="Close"
+            className="p-2 rounded-lg text-cyber-slate hover:text-cyber-white hover:bg-navy-700 transition"
+            aria-label="Close modal"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-6 sm:p-8 overflow-y-auto leading-relaxed text-sm sm:text-base text-cyber-slate space-y-4">
+        {/* Body */}
+        <div className="p-6 overflow-y-auto space-y-4">
           {loading && (
             <div className="flex flex-col items-center justify-center py-12 space-y-4">
               <div className="w-10 h-10 border-4 border-navy-600 border-t-cyber-teal rounded-full animate-spin" />
@@ -120,7 +133,7 @@ export default function ProjectExplainerModal({
             <div className="p-5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 space-y-3">
               <div className="flex items-center gap-2 font-mono text-xs font-bold text-amber-300">
                 <AlertCircle className="w-4 h-4" />
-                <span>RATE LIMIT REACHED (5 / 5 Queries / IP)</span>
+                <span>RATE LIMIT REACHED ({quotaLimit} / {quotaLimit} Queries / IP)</span>
               </div>
               <p className="text-xs sm:text-sm text-cyber-light">
                 {errorMsg}
@@ -162,9 +175,11 @@ export default function ProjectExplainerModal({
           <div className="flex items-center gap-2">
             <Bot className="w-4 h-4 text-cyber-teal" />
             <span>
-              {quotaRemaining !== null
-                ? `⚡ Quota: ${quotaRemaining}/5 queries remaining`
-                : "Limit: 5 queries per IP"}
+              ⚡ Quota:{" "}
+              <strong className={quotaRemaining > 0 ? "text-cyber-teal" : "text-amber-400"}>
+                {quotaRemaining}/{quotaLimit}
+              </strong>{" "}
+              queries remaining
             </span>
           </div>
 

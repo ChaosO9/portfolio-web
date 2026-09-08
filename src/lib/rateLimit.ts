@@ -6,7 +6,9 @@ interface RateLimitRecord {
 }
 
 const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours window
-export const MAX_REQUESTS_PER_IP = 15;
+export const MAX_REQUESTS_PER_IP = process.env.NEXT_PUBLIC_MAX_REQUESTS_PER_IP
+  ? parseInt(process.env.NEXT_PUBLIC_MAX_REQUESTS_PER_IP, 10)
+  : 15;
 
 // In-memory store (survives during server lifetime)
 const ipStore = new Map<string, RateLimitRecord>();
