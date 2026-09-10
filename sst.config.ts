@@ -23,7 +23,7 @@ export default $config({
       environment: {
         AWS_BEDROCK_REGION: "ap-southeast-2",
         AWS_BEDROCK_MODEL_ID: "amazon.nova-lite-v1:0",
-        AWS_BEDROCK_KB_ID: "CH3JGLS5OS",
+        AWS_BEDROCK_KB_ID: "ZQVKBL1NYR",
         NEXT_PUBLIC_MAX_REQUESTS_PER_IP: "15",
       },
       permissions: [
