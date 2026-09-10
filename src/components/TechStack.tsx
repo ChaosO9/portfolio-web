@@ -20,9 +20,9 @@ export default function TechStackSection({ onSelectSkill }: TechStackProps) {
         </h2>
       </div>
 
-      <p className="text-cyber-slate text-sm sm:text-base mb-10 max-w-2xl leading-relaxed">
+      {/* <p className="text-cyber-slate text-sm sm:text-base mb-10 max-w-2xl leading-relaxed">
         Rather than arbitrary percentage bars, here is my verified technology stack backed by real-world production systems and hands-on projects. Click any technology to view the exact projects where it was implemented.
-      </p>
+      </p> */}
 
       {/* Grid of Domain Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

@@ -58,6 +58,8 @@ export interface Certification {
   issuer: string;
   date: string;
   credentialUrl?: string;
+  credentialId?: string;
+  category?: "Cloud & DevOps" | "National (BNSP)" | "Software & Architecture" | "Foundations & Languages";
   iconName: string;
 }
 
@@ -550,58 +552,145 @@ export const TECH_STACK: TechStackCategory[] = [
 
 export const CERTIFICATIONS: Certification[] = [
   {
-    id: "aws-academy",
-    title: "AWS Academy Graduate — AWS Academy Cloud Foundations",
-    issuer: "Amazon Web Services (AWS)",
-    date: "May 2025",
+    id: "oci-devops",
+    title: "Oracle Cloud Infrastructure 2025 Certified DevOps Professional",
+    issuer: "Oracle",
+    date: "Dec 2025",
+    category: "Cloud & DevOps",
+    credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
+    iconName: "oracle",
+  },
+  {
+    id: "oci-architect",
+    title: "Oracle Cloud Infrastructure 2025 Certified Architect Associate",
+    issuer: "Oracle",
+    date: "Oct 2025",
+    category: "Cloud & DevOps",
+    credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
+    iconName: "oracle",
+  },
+  {
+    id: "aws-backend-advanced",
+    title: "Advanced Back-End Developer",
+    issuer: "AWS Back-End Academy 2025",
+    date: "Dec 2025",
+    credentialId: "1RXYDOV13XVM",
+    category: "Software & Architecture",
     credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
     iconName: "aws",
   },
   {
-    id: "bangkit-cert",
-    title: "Bangkit Academy Graduate — Cloud Computing Path",
-    issuer: "Google, Tokopedia, Gojek, & Traveloka",
-    date: "Jan 2024",
+    id: "aws-backend-intermediate",
+    title: "Intermediate Back-End Developer",
+    issuer: "AWS Back-End Academy 2025",
+    date: "Oct 2025",
+    credentialId: "AWS2025/L2-BE-065",
+    category: "Software & Architecture",
     credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
-    iconName: "cloud",
+    iconName: "aws",
+  },
+  {
+    id: "aws-academy",
+    title: "AWS Academy Graduate — AWS Academy Cloud Foundations",
+    issuer: "Amazon Web Services (AWS)",
+    date: "May 2025",
+    category: "Cloud & DevOps",
+    credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
+    iconName: "aws",
+  },
+  {
+    id: "toeic-865",
+    title: "TOEIC English Proficiency Test (Score: 865)",
+    issuer: "ETS Global B.V.",
+    date: "May 2026",
+    credentialId: "Reg: 2054603 · Score: 865",
+    category: "Foundations & Languages",
+    credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
+    iconName: "languages",
   },
   {
     id: "bnsp-net-admin",
     title: "Junior Network Administrator",
     issuer: "Badan Nasional Sertifikasi Profesi (BNSP)",
     date: "Sep 2024",
+    credentialId: "BNSP: 62028 5513 3 0000351 2024",
+    category: "National (BNSP)",
     credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
     iconName: "network",
   },
   {
     id: "bnsp-datacenter",
-    title: "Data Center Technical Support",
+    title: "Data Center Technical Support Junior",
     issuer: "Badan Nasional Sertifikasi Profesi (BNSP)",
     date: "Jul 2024",
+    credentialId: "BNSP: 62090 3513 3 0000717 2024",
+    category: "National (BNSP)",
     credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
     iconName: "server",
+  },
+  {
+    id: "bnsp-web-dev",
+    title: "Junior Web Developer",
+    issuer: "Badan Nasional Sertifikasi Profesi (BNSP)",
+    date: "Apr 2023",
+    credentialId: "BNSP: 62019 2513 22222 2023",
+    category: "National (BNSP)",
+    credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
+    iconName: "code",
+  },
+  {
+    id: "bangkit-cert",
+    title: "Bangkit Academy Graduate — Cloud Computing Path",
+    issuer: "Google, Tokopedia, Gojek, & Traveloka",
+    date: "Jan 2024",
+    category: "Cloud & DevOps",
+    credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
+    iconName: "cloud",
+  },
+  {
+    id: "google-tech-support",
+    title: "Technical Support Fundamentals",
+    issuer: "Google / Coursera",
+    date: "Mar 2024",
+    credentialId: "TKEBT792ZWCS",
+    category: "Foundations & Languages",
+    credentialUrl: "https://coursera.org/verify/TKEBT792ZWCS",
+    iconName: "shield",
   },
   {
     id: "google-sysadmin",
     title: "System Administration & IT Infrastructure Services",
     issuer: "Google / Coursera",
     date: "Oct 2023",
-    credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
+    credentialId: "33YX9U6ZVJTN",
+    category: "Foundations & Languages",
+    credentialUrl: "https://coursera.org/verify/33YX9U6ZVJTN",
     iconName: "shield",
+  },
+  {
+    id: "google-bits-bytes",
+    title: "The Bits and Bytes of Computer Networking",
+    issuer: "Google / Coursera",
+    date: "2023",
+    category: "Foundations & Languages",
+    credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
+    iconName: "network",
   },
   {
     id: "dicoding-backend",
     title: "Belajar Membuat Aplikasi Back-End untuk Pemula dengan Google Cloud",
     issuer: "Dicoding Indonesia",
     date: "2023",
+    category: "Software & Architecture",
     credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
     iconName: "code",
   },
   {
     id: "dicoding-mongodb",
     title: "Sertifikat Kelas Belajar MongoDB",
-    issuer: "Dicoding Indonesia",
+    issuer: "CODEPOLITAN",
     date: "2023",
+    category: "Software & Architecture",
     credentialUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
     iconName: "database",
   },
@@ -629,6 +718,15 @@ Summary:
   * Wowrack Indonesia: Cloud Computing Team (Hapi.js, GCP Cloud Run, Docker, TensorFlow.js anomaly detection).
   * Skypro Manajemen Teknologi: Project Assistant (Bankaltimtara OJK SOP compliance across 9 domains).
   * PT Media Kreasi Abadi: Web Developer (Laravel, React, Tailwind).
+- Key Certifications & Credentials:
+  * Oracle Cloud Infrastructure 2025 Certified DevOps Professional (Oracle, Dec 2025)
+  * Oracle Cloud Infrastructure 2025 Certified Architect Associate (Oracle, Oct 2025)
+  * AWS Back-End Academy 2025: Advanced (ID: 1RXYDOV13XVM) & Intermediate (ID: AWS2025/L2-BE-065)
+  * AWS Academy Graduate — AWS Academy Cloud Foundations (May 2025)
+  * BNSP Certified: Junior Network Administrator (2024), Data Center Technical Support Junior (2024), Junior Web Developer (2023)
+  * Bangkit Academy 2023 Graduate (Cloud Computing Path)
+  * TOEIC English Proficiency Test - Score 865 (ETS Global, May 2026)
+  * Google / Coursera: System Administration & IT Infrastructure Services, Technical Support Fundamentals, Bits and Bytes of Computer Networking
 - Key Projects:
   1. Setup & Expose Proxmox Web Control with Cloudflare Zero Trust & Tunnel (Zero inbound ports).
   2. WireGuard VPN on AWS EC2 (Optimized latency to Singapore).
