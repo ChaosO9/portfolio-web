@@ -29,7 +29,14 @@ export const metadata: Metadata = {
     "SATUSEHAT HL7 FHIR",
     "Next.js",
   ],
-  authors: [{ name: "Irfan Noor Hidayat" }],
+  icons: {
+    icon: [
+      { url: "/images/web-icon.png", type: "image/png" },
+      { url: "/web-icon.png", type: "image/png" },
+    ],
+    shortcut: "/images/web-icon.png",
+    apple: "/images/web-icon.png",
+  },
   openGraph: {
     title: "Irfan Noor Hidayat — Cloud Engineer & DevOps Developer",
     description:
@@ -53,6 +60,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} scroll-smooth`}>
       <head>
+        <link rel="icon" href="/images/web-icon.png" type="image/png" />
+        <link rel="shortcut icon" href="/images/web-icon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/images/web-icon.png" />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css"
