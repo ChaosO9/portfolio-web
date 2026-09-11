@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { message, projectTitle, history, sessionId } = body;
 
-    let result: { text: string; mode: "bedrock" | "demo"; sessionId?: string };
+    let result: { text: string; mode: "bedrock"; sessionId?: string };
 
     if (projectTitle) {
       result = await explainProjectWithBedrock(projectTitle);
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("API Chat Error:", error);
     return NextResponse.json(
-      { error: "An unexpected error occurred while processing your request." },
+      { error: (error as Error)?.message || "An unexpected error occurred while processing your request." },
       { status: 500 }
     );
   }

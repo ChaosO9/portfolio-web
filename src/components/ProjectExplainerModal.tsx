@@ -26,7 +26,6 @@ export default function ProjectExplainerModal({
   const [explanation, setExplanation] = useState<string>("");
   const [rateLimited, setRateLimited] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [mode, setMode] = useState<"bedrock" | "demo">("demo");
 
   useEffect(() => {
     if (!projectTitle) return;
@@ -63,7 +62,6 @@ export default function ProjectExplainerModal({
           if (typeof data.remaining === "number") {
             updateQuota(data.remaining, data.limit);
           }
-          if (data.mode) setMode(data.mode);
         }
       } catch (err) {
         if (!isMounted) return;
@@ -101,7 +99,7 @@ export default function ProjectExplainerModal({
               <h3 className="text-base sm:text-lg font-bold text-cyber-white flex items-center gap-2">
                 <span>Architecture Deep Dive</span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-navy-800 text-cyber-teal border border-cyber-teal/30 uppercase">
-                  {mode === "bedrock" ? "AWS Bedrock" : "AI Demo Mode"}
+                  AWS Bedrock
                 </span>
               </h3>
               <p className="text-xs font-mono text-cyber-slate truncate max-w-md">
@@ -190,6 +188,16 @@ export default function ProjectExplainerModal({
           >
             Done
           </button>
+        </div>
+
+        {/* Warning / Disclaimer Bar */}
+        <div className="px-4 py-2 bg-navy-950/90 border-t border-navy-800/80 text-center">
+          <p className="text-[11px] font-mono text-amber-300/80 flex items-center justify-center gap-1.5 leading-tight">
+            <AlertCircle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+            <span>
+              <strong>Warning:</strong> AI-generated analysis may not be correct and does not represent Irfan&apos;s official views.
+            </span>
+          </p>
         </div>
       </div>
     </div>
