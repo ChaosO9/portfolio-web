@@ -1,12 +1,37 @@
 import {
   BedrockRuntimeClient,
   InvokeModelCommand,
+  ConverseCommand,
+  Message,
+  ContentBlock,
 } from "@aws-sdk/client-bedrock-runtime";
 import {
   BedrockAgentRuntimeClient,
   RetrieveCommand,
 } from "@aws-sdk/client-bedrock-agent-runtime";
 import { PROFILE_CONTEXT_PROMPT, PROJECTS, EXPERIENCES } from "@/data/portfolioData";
+import { BEDROCK_AGENT_TOOLS } from "./tools/definitions";
+import { executeGitHubTool } from "./tools/github";
+import { executeTavilySearch } from "./tools/search";
+
+export interface BedrockToolCall {
+  tool: string;
+  query?: string;
+  status: "success" | "error";
+}
+
+export interface BedrockSource {
+  title: string;
+  url: string;
+}
+
+export interface BedrockChatResult {
+  text: string;
+  mode: "bedrock";
+  sessionId?: string;
+  toolsUsed?: BedrockToolCall[];
+  sources?: BedrockSource[];
+}
 
 const region = process.env.AWS_REGION || "ap-southeast-1";
 const bedrockRegion = process.env.AWS_BEDROCK_REGION || "ap-southeast-2";
@@ -14,7 +39,7 @@ const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 const sessionToken = process.env.AWS_SESSION_TOKEN;
 const modelId = process.env.AWS_BEDROCK_MODEL_ID || "amazon.nova-lite-v1:0";
-const knowledgeBaseId = process.env.AWS_BEDROCK_KB_ID || "CH3JGLS5OS";
+const knowledgeBaseId = process.env.AWS_BEDROCK_KB_ID || "ZQVKBL1NYR";
 
 // Determine environment: Lambda runtime or local
 const isAwsLambda = Boolean(process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.AWS_EXECUTION_ENV);
@@ -138,82 +163,210 @@ export async function askBedrock(
   userPrompt: string,
   history: { role: "user" | "assistant"; content: string }[] = [],
   sessionId?: string
-): Promise<{ text: string; mode: "bedrock"; sessionId?: string }> {
+): Promise<BedrockChatResult> {
   const effectiveSessionId = sessionId || `session-${Date.now()}`;
+  const toolsUsed: BedrockToolCall[] = [];
+  const sourcesMap = new Map<string, BedrockSource>();
 
-  // Filter out any leading assistant greeting to ensure the message list starts with "user"
-  const validHistory = history.filter((h, idx) => !(idx === 0 && h.role === "assistant"));
-  const conversationMessages = [
-    ...validHistory.map((h) => ({
-      role: h.role === "assistant" ? ("assistant" as const) : ("user" as const),
-      content: h.content,
-    })),
-    { role: "user" as const, content: userPrompt },
-  ];
+  const addSource = (src?: BedrockSource) => {
+    if (src?.url && !sourcesMap.has(src.url)) {
+      sourcesMap.set(src.url, src);
+    }
+  };
 
-  // 1. Try Bedrock Knowledge Base RAG (Retrieve chunks + Invoke foundation model)
-  if (bedrockClient && agentClient && knowledgeBaseId) {
+  // 1. Bedrock Knowledge Base RAG retrieval (if available)
+  let retrievedContext = "";
+  if (agentClient && knowledgeBaseId) {
     try {
-      let retrievedContext = "";
-      try {
-        // Bedrock Knowledge Base retrieval query has a strict character limit (<= 1000)
-        const trimmedQuery = userPrompt.trim().slice(0, 350);
-        const retrieveCommand = new RetrieveCommand({
-          knowledgeBaseId,
-          retrievalQuery: { text: trimmedQuery },
-        });
-        const retrieveRes = await agentClient.send(retrieveCommand);
-        const chunks = retrieveRes.retrievalResults
-          ?.map((r) => r.content?.text)
-          .filter(Boolean);
-        if (chunks && chunks.length > 0) {
-          retrievedContext = `\n\nVerified Knowledge Base Chunks:\n${chunks.join("\n\n---\n\n")}`;
-        }
-      } catch (kbErr) {
-        console.warn("Bedrock Retrieve failed:", kbErr);
+      const trimmedQuery = userPrompt.trim().slice(0, 350);
+      const retrieveCommand = new RetrieveCommand({
+        knowledgeBaseId,
+        retrievalQuery: { text: trimmedQuery },
+      });
+      const retrieveRes = await agentClient.send(retrieveCommand);
+      const chunks = retrieveRes.retrievalResults
+        ?.map((r) => r.content?.text)
+        .filter(Boolean);
+      if (chunks && chunks.length > 0) {
+        retrievedContext = `\n\nVerified Knowledge Base Chunks:\n${chunks.join("\n\n---\n\n")}`;
       }
-
-      const ragSystemPrompt = `${PROFILE_CONTEXT_PROMPT}${retrievedContext}\n\nInstructions: You are Irfan's AI Assistant. Answer conversationally in the first person ("I", "my work"). Maintain conversational context from earlier messages in this conversation. Be concise, structured, and helpful. Note: If asked about personal opinions, commitments, or official representations, clarify that you are an AI assistant whose responses may contain inaccuracies and do not officially represent Irfan's views.`;
-
-      const modelAnswer = await invokeFoundationModel(
-        bedrockClient,
-        modelId,
-        ragSystemPrompt,
-        conversationMessages
-      );
-
-      if (modelAnswer) {
-        return {
-          text: modelAnswer,
-          sessionId: effectiveSessionId,
-          mode: "bedrock",
-        };
-      }
-    } catch (ragErr) {
-      console.warn("Bedrock RAG workflow failed, falling back to direct model invocation:", ragErr);
+    } catch (kbErr) {
+      console.warn("Bedrock Retrieve failed:", kbErr);
     }
   }
 
-  // 2. Direct Foundation Model fallback (without Knowledge Base)
+  const systemPrompt = `${PROFILE_CONTEXT_PROMPT}${retrievedContext}
+
+Instructions:
+You are Irfan's AI Assistant. Answer conversationally in the first person ("I", "my work").
+Maintain conversational context from earlier messages in this conversation. Be concise, structured, and helpful.
+
+Strict Tool Calling Rules:
+1. You already possess Irfan's full biography, career timeline, education, certifications, and project library in your context. For general questions about Irfan's bio, skills, education, or listed projects, answer directly from your context WITHOUT calling tools.
+2. Call 'crawl_github' ONLY when the user explicitly asks to view code, inspect repository files, view directory trees, check latest commits, read a README, or list public repositories.
+3. Call 'search_web' ONLY when the user asks about recent external news, latest cloud/DevOps technologies, external company information, or Irfan's public LinkedIn profile updates.
+4. Note: If asked about personal opinions, commitments, or official representations, clarify that you are an AI assistant whose responses may contain inaccuracies and do not officially represent Irfan's views.`;
+
+  // 2. Try Agentic execution via Bedrock ConverseCommand
   if (bedrockClient) {
     try {
+      const validHistory = history.filter((h, idx) => !(idx === 0 && h.role === "assistant"));
+      const converseMessages: Message[] = [
+        ...validHistory.map((h) => ({
+          role: h.role === "assistant" ? ("assistant" as const) : ("user" as const),
+          content: [{ text: h.content }],
+        })),
+        { role: "user" as const, content: [{ text: userPrompt }] },
+      ];
+
+      let currentMessages = [...converseMessages];
+      let iterations = 0;
+      const MAX_TOOL_ITERATIONS = 2;
+
+      while (iterations < MAX_TOOL_ITERATIONS) {
+        iterations++;
+        const command = new ConverseCommand({
+          modelId,
+          system: [{ text: systemPrompt }],
+          messages: currentMessages,
+          toolConfig: BEDROCK_AGENT_TOOLS,
+          inferenceConfig: {
+            temperature: 0,
+            maxTokens: 1000,
+          },
+        });
+
+        const response = await bedrockClient.send(command);
+        const assistantMessage = response.output?.message;
+        if (!assistantMessage) break;
+
+        if (response.stopReason === "tool_use") {
+          currentMessages.push(assistantMessage);
+          const toolResultsBlocks: ContentBlock[] = [];
+
+          for (const block of assistantMessage.content || []) {
+            if (block.toolUse) {
+              const { toolUseId, name, input } = block.toolUse;
+              if (!toolUseId || !name) continue;
+              let toolOutput: any = null;
+
+              try {
+                if (name === "crawl_github") {
+                  const ghParams = input as any;
+                  const queryLabel =
+                    ghParams.action === "list_repos"
+                      ? "Listing repositories"
+                      : `${ghParams.action}: ${ghParams.repo || ""}${ghParams.path ? "/" + ghParams.path : ""}`;
+                  toolsUsed.push({
+                    tool: "crawl_github",
+                    query: queryLabel,
+                    status: "success",
+                  });
+                  const result = await executeGitHubTool(ghParams);
+                  toolOutput = result.data;
+                  if (result.source) addSource(result.source);
+                } else if (name === "search_web") {
+                  const searchParams = input as any;
+                  toolsUsed.push({
+                    tool: "search_web",
+                    query: searchParams.query,
+                    status: "success",
+                  });
+                  const result = await executeTavilySearch(searchParams.query, 4, searchParams.domains);
+                  toolOutput = {
+                    query: result.query,
+                    results: result.results,
+                  };
+                  result.sources?.forEach(addSource);
+                } else {
+                  toolOutput = { error: `Unknown tool: ${name}` };
+                }
+              } catch (toolErr) {
+                console.error(`Tool execution error for ${name}:`, toolErr);
+                toolsUsed.push({
+                  tool: name,
+                  query: (input as any)?.query || (input as any)?.action || "",
+                  status: "error",
+                });
+                toolOutput = { error: (toolErr as Error).message };
+              }
+
+              toolResultsBlocks.push({
+                toolResult: {
+                  toolUseId,
+                  content: [{ json: toolOutput }],
+                  status: "success",
+                },
+              });
+            }
+          }
+
+          currentMessages.push({
+            role: "user",
+            content: toolResultsBlocks,
+          });
+        } else {
+          // Model finished its turn
+          const textBlock = assistantMessage.content?.find((c) => c.text);
+          let rawText = textBlock?.text || "";
+          rawText = rawText.replace(/<thinking>[\s\S]*?<\/thinking>/gi, "").trim();
+
+          if (rawText) {
+            return {
+              text: rawText,
+              sessionId: effectiveSessionId,
+              mode: "bedrock",
+              toolsUsed: toolsUsed.length > 0 ? toolsUsed : undefined,
+              sources: sourcesMap.size > 0 ? Array.from(sourcesMap.values()) : undefined,
+            };
+          }
+        }
+      }
+
+      // If loop exited with a final text message
+      const lastMessage = currentMessages[currentMessages.length - 1];
+      const lastText = lastMessage?.content?.find((c) => c.text)?.text;
+      if (lastText) {
+        return {
+          text: lastText.replace(/<thinking>[\s\S]*?<\/thinking>/gi, "").trim(),
+          sessionId: effectiveSessionId,
+          mode: "bedrock",
+          toolsUsed: toolsUsed.length > 0 ? toolsUsed : undefined,
+          sources: sourcesMap.size > 0 ? Array.from(sourcesMap.values()) : undefined,
+        };
+      }
+    } catch (converseErr) {
+      console.warn("Bedrock Converse agent failed, falling back to direct model invocation:", converseErr);
+    }
+
+    // 3. Direct Foundation Model fallback
+    try {
+      const validHistory = history.filter((h, idx) => !(idx === 0 && h.role === "assistant"));
+      const conversationMessages = [
+        ...validHistory.map((h) => ({
+          role: h.role === "assistant" ? ("assistant" as const) : ("user" as const),
+          content: h.content,
+        })),
+        { role: "user" as const, content: userPrompt },
+      ];
+
       const modelAnswer = await invokeFoundationModel(
         bedrockClient,
         modelId,
-        `${PROFILE_CONTEXT_PROMPT}\n\nInstructions: You are Irfan's AI Assistant. Answer conversationally in the first person ("I", "my work"). Be concise, structured, and helpful. Note: If asked about personal opinions, commitments, or official representations, clarify that you are an AI assistant whose responses may contain inaccuracies and do not officially represent Irfan's views.`,
+        systemPrompt,
         conversationMessages
       );
 
       if (modelAnswer) {
         return {
-          text: modelAnswer,
+          text: modelAnswer.replace(/<thinking>[\s\S]*?<\/thinking>/gi, "").trim(),
           sessionId: effectiveSessionId,
           mode: "bedrock",
         };
       }
     } catch (directErr) {
-      console.error("Bedrock direct model invocation failed:", directErr);
-      throw new Error(`Bedrock direct model invocation failed: ${(directErr as Error).message}`);
+      console.error("Bedrock direct model fallback failed:", directErr);
+      throw new Error(`Bedrock direct model failed: ${(directErr as Error).message}`);
     }
   }
 
@@ -222,7 +375,7 @@ export async function askBedrock(
 
 export async function explainProjectWithBedrock(
   projectTitle: string
-): Promise<{ text: string; mode: "bedrock"; sessionId?: string }> {
+): Promise<BedrockChatResult> {
   // Find project by title, ID, or substring match
   const normalizedSearch = projectTitle.trim().toLowerCase();
   const project = PROJECTS.find(

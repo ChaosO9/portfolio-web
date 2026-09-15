@@ -25,6 +25,8 @@ export default $config({
         AWS_BEDROCK_MODEL_ID: "amazon.nova-lite-v1:0",
         AWS_BEDROCK_KB_ID: "ZQVKBL1NYR",
         NEXT_PUBLIC_MAX_REQUESTS_PER_IP: "15",
+        GITHUB_TOKEN: process.env.GITHUB_TOKEN || "",
+        TAVILY_API_KEY: process.env.TAVILY_API_KEY || "",
       },
       permissions: [
         {

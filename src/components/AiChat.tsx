@@ -11,21 +11,36 @@ import {
   ExternalLink,
   MessageCircle,
   Info,
+  GitBranch,
+  Globe,
 } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 import { useQuota } from "@/context/QuotaContext";
 import MarkdownRenderer from "./MarkdownRenderer";
 
+interface ToolCallInfo {
+  tool: string;
+  query?: string;
+  status: "success" | "error";
+}
+
+interface SourceInfo {
+  title: string;
+  url: string;
+}
+
 interface ChatMessage {
   role: "user" | "assistant";
   content: string;
+  toolsUsed?: ToolCallInfo[];
+  sources?: SourceInfo[];
 }
 
 const PRESET_PROMPTS = [
+  "What public repos does Irfan have on GitHub?",
   "What did Irfan build at Panasonic?",
-  "Explain the SATUSEHAT interoperability project",
-  "How did Irfan set up WireGuard VPN on EC2?",
-  "What microservices did Irfan develop at Wowrack?",
+  "Inspect Irfan's portfolio-web repo structure",
+  "Search latest news on AWS Bedrock Nova models",
 ];
 
 export default function AiChatSection() {
@@ -106,6 +121,8 @@ export default function AiChatSection() {
           {
             role: "assistant",
             content: data.response,
+            toolsUsed: data.toolsUsed,
+            sources: data.sources,
           },
         ]);
         if (typeof data.remaining === "number") {
@@ -240,10 +257,53 @@ export default function AiChatSection() {
                     : "bg-navy-700 text-cyber-light border border-navy-600/70 rounded-tl-none"
                     }`}
                 >
+                  {/* Tool execution badge if used */}
+                  {!isUser && msg.toolsUsed && msg.toolsUsed.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mb-2.5 pb-2 border-b border-navy-600/60">
+                      {msg.toolsUsed.map((t, tIdx) => (
+                        <span
+                          key={tIdx}
+                          className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono bg-navy-800 text-cyber-teal border border-cyber-teal/30"
+                        >
+                          {t.tool === "crawl_github" ? (
+                            <>
+                              <GitBranch className="w-3 h-3 text-cyber-teal flex-shrink-0" />
+                              <span className="truncate max-w-[240px]">GitHub: {t.query}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Globe className="w-3 h-3 text-cyber-teal flex-shrink-0" />
+                              <span className="truncate max-w-[240px]">Tavily: {t.query}</span>
+                            </>
+                          )}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
                   {isUser ? (
                     msg.content
                   ) : (
                     <MarkdownRenderer content={msg.content} />
+                  )}
+
+                  {/* Sources if provided */}
+                  {!isUser && msg.sources && msg.sources.length > 0 && (
+                    <div className="mt-3 pt-2.5 border-t border-navy-600/50 flex flex-wrap items-center gap-1.5 text-[11px] font-mono">
+                      <span className="text-[10px] text-cyber-slate/70 uppercase tracking-wider mr-1">Sources:</span>
+                      {msg.sources.map((src, sIdx) => (
+                        <a
+                          key={sIdx}
+                          href={src.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-navy-800/80 hover:bg-navy-600 text-cyber-light hover:text-cyber-teal border border-navy-600/80 transition"
+                        >
+                          <ExternalLink className="w-2.5 h-2.5" />
+                          <span className="truncate max-w-[200px]">{src.title}</span>
+                        </a>
+                      ))}
+                    </div>
                   )}
                 </div>
               </div>

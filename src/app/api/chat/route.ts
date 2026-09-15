@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit, getRemainingQuota, MAX_REQUESTS_PER_IP } from "@/lib/rateLimit";
-import { askBedrock, explainProjectWithBedrock, isBedrockConfigured } from "@/lib/bedrock";
+import { askBedrock, explainProjectWithBedrock, isBedrockConfigured, BedrockChatResult } from "@/lib/bedrock";
 
 function getClientIp(req: NextRequest): string {
   const forwarded = req.headers.get("x-forwarded-for");
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { message, projectTitle, history, sessionId } = body;
 
-    let result: { text: string; mode: "bedrock"; sessionId?: string };
+    let result: BedrockChatResult;
 
     if (projectTitle) {
       result = await explainProjectWithBedrock(projectTitle);
@@ -72,6 +72,8 @@ export async function POST(req: NextRequest) {
         remaining: rateCheck.remaining,
         limit: MAX_REQUESTS_PER_IP,
         mode: result.mode,
+        toolsUsed: result.toolsUsed,
+        sources: result.sources,
       },
       {
         headers: {
