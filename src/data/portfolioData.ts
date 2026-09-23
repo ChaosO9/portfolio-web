@@ -86,13 +86,13 @@ export const PERSONAL_INFO = {
   whatsappUrl: "https://wa.me/6287784312184",
   linkedinUrl: "https://www.linkedin.com/in/irfan-noor-hidayat-5847b2156/",
   githubUrl: "https://github.com/ChaosO9",
-  resumeUrl: "#",
   avatarUrl: "/images/profile.jpg",
   languages: [
     { name: "Indonesian", level: "Native / Bilingual" },
     { name: "English", level: "Professional Working" },
     { name: "Japanese", level: "Elementary" },
   ],
+  resumeUrl: "https://irfan-portfolio-knowledge-base-s3.s3.ap-southeast-2.amazonaws.com/another_CV+ATS+Irfan_new.pdf"
 };
 
 export const EXPERIENCES: Experience[] = [
