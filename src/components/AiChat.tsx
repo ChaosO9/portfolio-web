@@ -59,16 +59,31 @@ export default function AiChatSection() {
   ]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isWarmingUp, setIsWarmingUp] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
 
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
-  // Scroll to bottom when messages update
+  // Set warm-up notice if request takes > 8 seconds
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (loading) {
+      setIsWarmingUp(false);
+      timer = setTimeout(() => {
+        setIsWarmingUp(true);
+      }, 8000); // 8 seconds
+    } else {
+      setIsWarmingUp(false);
+    }
+    return () => clearTimeout(timer);
+  }, [loading]);
+
+  // Scroll to bottom when messages update or warm-up notice shows
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [messages, loading]);
+  }, [messages, loading, isWarmingUp]);
 
   const handleSendMessage = async (textToSend?: string) => {
     const query = (textToSend || inputValue).trim();
@@ -310,17 +325,28 @@ export default function AiChatSection() {
             );
           })}
 
-          {/* Typing Indicator */}
+          {/* Typing Indicator & Warm-up Notice */}
           {loading && (
-            <div className="flex items-start gap-3 max-w-lg mr-auto">
-              <div className="w-8 h-8 rounded-full bg-navy-700 text-cyber-teal border border-navy-600 flex items-center justify-center flex-shrink-0 text-xs font-mono">
-                <Bot className="w-4 h-4" />
+            <div className="flex flex-col gap-2.5 max-w-lg mr-auto">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-full bg-navy-700 text-cyber-teal border border-navy-600 flex items-center justify-center flex-shrink-0 text-xs font-mono">
+                  <Bot className="w-4 h-4" />
+                </div>
+                <div className="p-4 rounded-2xl bg-navy-700 border border-navy-600/70 rounded-tl-none flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-cyber-teal typing-dot" />
+                  <span className="w-2 h-2 rounded-full bg-cyber-teal typing-dot" />
+                  <span className="w-2 h-2 rounded-full bg-cyber-teal typing-dot" />
+                </div>
               </div>
-              <div className="p-4 rounded-2xl bg-navy-700 border border-navy-600/70 rounded-tl-none flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-cyber-teal typing-dot" />
-                <span className="w-2 h-2 rounded-full bg-cyber-teal typing-dot" />
-                <span className="w-2 h-2 rounded-full bg-cyber-teal typing-dot" />
-              </div>
+
+              {isWarmingUp && (
+                <div className="ml-11 px-3.5 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-mono flex items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-300">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin flex-shrink-0" />
+                  <span className="leading-snug">
+                    ⚡ <strong>AWS Bedrock Notice:</strong> The serverless vector database is currently warming up from idle. Your answer will appear in a moment!
+                  </span>
+                </div>
+              )}
             </div>
           )}
         </div>

@@ -20,6 +20,9 @@ export default $config({
         aliases: ["www.irfannoorhidayat.my.id"],
         dns: sst.cloudflare.dns(),
       },
+      server: {
+        timeout: "60 seconds",
+      },
       environment: {
         AWS_BEDROCK_REGION: "ap-southeast-2",
         AWS_BEDROCK_MODEL_ID: "amazon.nova-lite-v1:0",
