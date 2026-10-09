@@ -235,6 +235,39 @@ export const EDUCATIONS: Education[] = [
 
 export const PROJECTS: Project[] = [
   {
+    id: "complete-devops-aws",
+    title: "End-to-End Enterprise DevOps on AWS (EKS, Terraform, Ansible & Jenkins)",
+    category: "DevOps",
+    type: "PERSONAL",
+    skills: [
+      "AWS",
+      "Terraform",
+      "Kubernetes",
+      "Amazon EKS",
+      "Ansible",
+      "Jenkins",
+      "Docker",
+      "JFrog Artifactory",
+      "SonarCloud",
+      "AWS SSM",
+      "AWS Secrets Manager",
+      "Grafana Cloud",
+    ],
+    date: "Oct 2026",
+    shortDescription: "Production-grade, bastionless GitOps & CI/CD architecture on AWS featuring Terraform IaC, Amazon EKS (v1.30), SSM-based Ansible configuration, and a 6-stage Jenkins pipeline with JFrog Artifactory & SonarCloud.",
+    problem: "Setting up production-grade enterprise CI/CD and Kubernetes on AWS often suffers from insecure SSH bastions (port 22 open to the world), manual configuration drift, credential leakage in git repositories, and high cloud compute costs.",
+    role: "Solo Cloud & DevOps Engineer — Architected, coded, and deployed the complete modular Terraform infrastructure, SSM-based Ansible automation, declarative Jenkins CI/CD pipeline, and Kubernetes manifests.",
+    solution: "Built a zero-trust, bastionless cloud architecture on AWS: 1) Modular Terraform provisions a multi-AZ VPC, S3 staging bucket, IAM roles, and ARM64 Graviton EC2 Spot instances; 2) Ansible configures Jenkins Master and Agent nodes strictly over encrypted AWS Systems Manager (SSM) with Port 22 closed; 3) Declarative 6-stage Jenkins pipeline executes Maven builds, JaCoCo testing, SonarCloud quality gating, dynamically fetches JFrog tokens from AWS Secrets Manager, and executes rolling deployments to an Amazon EKS v1.30 cluster; 4) Prometheus remote_write streams cluster metrics directly to Grafana Cloud.",
+    results: "Delivered 100% bastionless infrastructure with zero open inbound ports (port 22 closed), reduced compute costs by ~70% using ARM64 Graviton Spot nodes, automated quality gating with zero hardcoded credentials, and achieved zero-downtime rolling updates on Amazon EKS.",
+    links: [
+      { label: "GitHub Repository", url: "https://github.com/ChaosO9/complete-devops-tool-project", type: "github" },
+      { label: "CI/CD Pipeline (Jenkinsfile)", url: "https://github.com/ChaosO9/complete-devops-tool-project/blob/main/jenkins/Jenkinsfile", type: "github" },
+      { label: "Terraform Infrastructure", url: "https://github.com/ChaosO9/complete-devops-tool-project/tree/main/terraform", type: "github" },
+      { label: "Successfull Pipeline", url: "https://drive.google.com/file/d/1OddF3Ibxb4qWG6Qud3TBksuE1jt45EXO/view?usp=drivesdk", type: "drive" },
+    ],
+    featured: true,
+  },
+  {
     id: "proxmox-cloudflare",
     title: "Setup & Expose Proxmox Web Control with Cloudflare Zero Trust & Tunnel",
     category: "DevOps",
@@ -505,7 +538,9 @@ export const TECH_STACK: TechStackCategory[] = [
     category: "Cloud & Infrastructure",
     description: "Multi-cloud architecture, compute, and on-premise hypervisors.",
     items: [
-      { name: "AWS", skillKey: "AWS", projectCount: 3, level: "Daily Driver" },
+      { name: "AWS", skillKey: "AWS", projectCount: 4, level: "Daily Driver" },
+      { name: "Terraform & IaC", skillKey: "Terraform", projectCount: 1, level: "Daily Driver" },
+      { name: "Kubernetes (EKS)", skillKey: "Kubernetes", projectCount: 1, level: "Proficient" },
       { name: "Google Cloud (GCP)", skillKey: "GCP", projectCount: 4, level: "Daily Driver" },
       { name: "Proxmox VE", skillKey: "Proxmox", projectCount: 1, level: "Proficient" },
       { name: "Azure DevOps", skillKey: "Azure", projectCount: 1, level: "Proficient" },
@@ -516,10 +551,11 @@ export const TECH_STACK: TechStackCategory[] = [
     category: "DevOps, Networking & Security",
     description: "Zero Trust tunneling, containerization, VPNs, and CI/CD pipelines.",
     items: [
-      { name: "Docker & Compose", skillKey: "Docker", projectCount: 5, level: "Daily Driver" },
+      { name: "Docker & Compose", skillKey: "Docker", projectCount: 6, level: "Daily Driver" },
+      { name: "CI/CD (Jenkins, Azure, Cloud Build)", skillKey: "CI/CD", projectCount: 4, level: "Daily Driver" },
+      { name: "Ansible Automation", skillKey: "Ansible", projectCount: 1, level: "Proficient" },
       { name: "Cloudflare Zero Trust & Tunnel", skillKey: "Cloudflare", projectCount: 2, level: "Proficient" },
       { name: "WireGuard VPN", skillKey: "WireGuard", projectCount: 1, level: "Proficient" },
-      { name: "CI/CD (Cloud Build, Azure)", skillKey: "CI/CD", projectCount: 3, level: "Daily Driver" },
       { name: "NGINX", skillKey: "NGINX", projectCount: 2, level: "Proficient" },
       { name: "Bash Automation", skillKey: "Bash", projectCount: 3, level: "Daily Driver" },
     ],
@@ -729,16 +765,17 @@ Summary:
   * TOEIC English Proficiency Test - Score 865 (ETS Global, May 2026)
   * Google / Coursera: System Administration & IT Infrastructure Services, Technical Support Fundamentals, Bits and Bytes of Computer Networking
 - Key Projects:
-  1. Setup & Expose Proxmox Web Control with Cloudflare Zero Trust & Tunnel (Zero inbound ports).
-  2. WireGuard VPN on AWS EC2 (Optimized latency to Singapore).
-  3. RAG Chatbot with AWS Bedrock & Lambda.
-  4. Bankaltimtara OJK SOP Documentation Audit across 9 domains (COBIT).
-  5. Microservice for Backend Cloudraya on GCP (Cloud Run, Cloud Build, Docker, PostgreSQL) - POLNES Final Project.
-  6. SATUSEHAT HL7 FHIR Interoperability Agent (Trustmedis to MoH, read-replica DB isolation) - PENS Final Project.
-  7. JLPT Registration Bot (Playwright, AWS EC2, Cloudflare queue handling).
-  8. HRMS ROMANSY & PTC at Panasonic (MS Teams approval workflows via Power Automate & n8n).
-  9. TalentTrail AI E-Recruitment at Panasonic (AWS Bedrock, Blazor, ASP.NET Core).
-  10. NGINX Reverse Proxy on GCP.
-  11. Nested Virtualization on GCP (Windows guest on Ubuntu host).
-  12. Azure DevOps CI/CD pipeline with self-hosted agent pool.
+  1. End-to-End Enterprise DevOps on AWS (Terraform IaC, Amazon EKS v1.30, Ansible configuration over AWS SSM with Port 22 closed, 6-stage Jenkins CI/CD pipeline, JFrog Artifactory, SonarCloud, and Grafana Cloud observability). GitHub: https://github.com/ChaosO9/complete-devops-tool-project
+  2. Setup & Expose Proxmox Web Control with Cloudflare Zero Trust & Tunnel (Zero inbound ports).
+  3. WireGuard VPN on AWS EC2 (Optimized latency to Singapore).
+  4. RAG Chatbot with AWS Bedrock & Lambda.
+  5. Bankaltimtara OJK SOP Documentation Audit across 9 domains (COBIT).
+  6. Microservice for Backend Cloudraya on GCP (Cloud Run, Cloud Build, Docker, PostgreSQL) - POLNES Final Project.
+  7. SATUSEHAT HL7 FHIR Interoperability Agent (Trustmedis to MoH, read-replica DB isolation) - PENS Final Project.
+  8. JLPT Registration Bot (Playwright, AWS EC2, Cloudflare queue handling).
+  9. HRMS ROMANSY & PTC at Panasonic (MS Teams approval workflows via Power Automate & n8n).
+  10. TalentTrail AI E-Recruitment at Panasonic (AWS Bedrock, Blazor, ASP.NET Core).
+  11. NGINX Reverse Proxy on GCP.
+  12. Nested Virtualization on GCP (Windows guest on Ubuntu host).
+  13. Azure DevOps CI/CD pipeline with self-hosted agent pool.
 `;

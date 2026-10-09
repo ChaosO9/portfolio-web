@@ -25,6 +25,10 @@ interface ProjectsProps {
 const POPULAR_SKILLS = [
   "All Skills",
   "AWS",
+  "Terraform",
+  "Kubernetes",
+  "Jenkins",
+  "Ansible",
   "GCP",
   "Docker",
   "Cloudflare",
