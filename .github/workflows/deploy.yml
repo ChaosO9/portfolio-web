@@ -37,4 +37,5 @@ jobs:
           AWS_REGION: "ap-southeast-1"
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_DEFAULT_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_DEFAULT_ACCOUNT_ID }}
+          AWS_BEDROCK_KB_ID: ${{ secrets.AWS_BEDROCK_KB_ID }}
         run: npx sst deploy --stage production

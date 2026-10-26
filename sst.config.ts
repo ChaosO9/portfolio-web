@@ -26,7 +26,7 @@ export default $config({
       environment: {
         AWS_BEDROCK_REGION: "ap-southeast-2",
         AWS_BEDROCK_MODEL_ID: "amazon.nova-lite-v1:0",
-        AWS_BEDROCK_KB_ID: "ZQVKBL1NYR",
+        AWS_BEDROCK_KB_ID: process.env.AWS_BEDROCK_KB_ID || "",
         NEXT_PUBLIC_MAX_REQUESTS_PER_IP: "15",
         GITHUB_TOKEN: process.env.GITHUB_TOKEN || "",
         TAVILY_API_KEY: process.env.TAVILY_API_KEY || "",
