@@ -20,6 +20,7 @@ export default $config({
         aliases: ["www.irfannoorhidayat.my.id"],
         dns: sst.cloudflare.dns(),
       },
+      openNextVersion: "4.1.12",
       server: {
         timeout: "60 seconds",
       },
