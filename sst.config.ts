@@ -15,11 +15,11 @@ export default $config({
   },
   async run() {
     new sst.aws.Nextjs("PortfolioWeb", {
-      // domain: {
-      //   name: "irfannoorhidayat.my.id",
-      //   aliases: ["www.irfannoorhidayat.my.id"],
-      //   dns: sst.cloudflare.dns(),
-      // },
+      domain: {
+        name: "irfannoorhidayat.my.id",
+        aliases: ["www.irfannoorhidayat.my.id"],
+        dns: sst.cloudflare.dns(),
+      },
       openNextVersion: "4.1.12",
       server: {
         timeout: "60 seconds",
